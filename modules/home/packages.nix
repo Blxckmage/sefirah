@@ -73,7 +73,6 @@
         zsh-autosuggestions
         zsh-fast-syntax-highlighting
         heroic
-        mangohud
         (writeShellScriptBin "with-gamescope" ''
           exec gamescope -f -W 1920 -H 1080 -- "$@"
         '')
