@@ -1,0 +1,9 @@
+# sops creation rules: which age keys can encrypt which files.
+# Your public key (private half at ~/.config/sops/age/keys.txt, NEVER in repo):
+#   age1t6e2safhntq4yhqcu46nl4l6mq65xgpzl6rsw4x04rmg79ay59gq5m8kyz
+# Add a second machine/user by appending its key to the list below.
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+      - age:
+          - age1t6e2safhntq4yhqcu46nl4l6mq65xgpzl6rsw4x04rmg79ay59gq5m8kyz
