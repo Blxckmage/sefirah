@@ -58,6 +58,7 @@
         ripgrep
         jq
         tree
+        p7zip
         age
         sops
         cachix
