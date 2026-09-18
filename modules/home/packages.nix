@@ -39,9 +39,8 @@
         satty
         hyprlock
         cliphist
-        kdePackages.dolphin
-        kdePackages.qtstyleplugin-kvantum
-        materia-everforest-kvantum
+        nautilus
+        sushi
         tela-icon-theme
         waybar
         hyprpaper
