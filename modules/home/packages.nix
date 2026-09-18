@@ -59,7 +59,8 @@
         jq
         tree
         p7zip
-        _7zz
+        unzip
+        unrar
         age
         sops
         cachix
