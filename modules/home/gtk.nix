@@ -32,6 +32,7 @@
         gtk-theme = "Everforest-Dark";
         icon-theme = "Tela-green-dark";
         cursor-theme = "Bibata-Modern-Classic";
+        text-scaling-factor = 1.25;
       };
       # libadwaita (Nautilus) ignores the system GTK theme; it only reads
       # ~/.config/gtk-4.0/gtk.css, so link the theme file + its assets there.
