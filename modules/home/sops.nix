@@ -5,7 +5,7 @@
       sops = {
         defaultSopsFile = ../../secrets/secrets.yaml;
         age.keyFile = "/home/blackmage/.config/sops/age/keys.txt";
-        secrets = { };
+        secrets.cachix-token = { };
       };
     }
   ];
