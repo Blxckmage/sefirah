@@ -59,6 +59,7 @@
         jq
         tree
         p7zip
+        _7zz
         age
         sops
         cachix
