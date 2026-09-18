@@ -61,6 +61,9 @@
         p7zip
         unzip
         unrar
+        (writeShellScriptBin "waybar-reload" ''
+          systemctl --user restart waybar.service
+        '')
         age
         sops
         cachix
