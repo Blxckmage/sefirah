@@ -9,7 +9,9 @@
         foot
         impala
         tmux
-        brave
+        (brave.override {
+          commandLineArgs = "--force-device-scale-factor=1";
+        })
         discord
         gcc
         rustc
