@@ -11,7 +11,6 @@
         tmux
         brave
         discord
-        flatpak
         gcc
         rustc
         cargo
@@ -30,7 +29,6 @@
         mise
         bat
         fd
-        btop
         lsof
         wl-clipboard
         libnotify

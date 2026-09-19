@@ -15,11 +15,6 @@
         };
       };
     }
-    ({ lib, ... }: {
-      systemd.user.services.hyprpaper.Unit.After = lib.mkForce [ "default.target" ];
-      systemd.user.services.hyprpaper.Unit.PartOf = lib.mkForce [ "default.target" ];
-      systemd.user.services.hyprpaper.Install.WantedBy = lib.mkForce [ "default.target" ];
-    })
     (
       { pkgs, ... }:
       let

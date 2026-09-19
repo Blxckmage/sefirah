@@ -1,14 +1,18 @@
-{ ... }:
+{ lib, ... }:
 {
   config.sefirah.nixosModules = [
     {
       networking.networkmanager.enable = true;
-      networking.networkmanager.wifi.backend = "iwd";
-      environment.etc."NetworkManager/conf.d/20-iwd-no-autoconnect.conf".text = ''
-        [device-wifi]
-        match-device = type:wifi
-        wifi.iwd.autoconnect = false
-      '';
+      networking.networkmanager.unmanaged = [ "type:wifi" ];
+
+      networking.wireless.enable = lib.mkForce false;
+      networking.wireless.iwd.enable = true;
+      networking.wireless.iwd.settings = {
+        General.EnableNetworkConfiguration = true;
+        Settings.AutoConnect = true;
+      };
+
+      services.resolved.enable = true;
       time.timeZone = "Asia/Jakarta";
       i18n.defaultLocale = "en_US.UTF-8";
     }

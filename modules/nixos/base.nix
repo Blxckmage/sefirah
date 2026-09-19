@@ -1,7 +1,7 @@
 { ... }:
 {
   config.sefirah.nixosModules = [
-    {
+    ({ pkgs, ... }: {
       nix.settings.experimental-features = [
         "nix-command"
         "flakes"
@@ -20,7 +20,9 @@
 
       nixpkgs.config.allowUnfree = true;
 
+      environment.systemPackages = with pkgs; [ wget ];
+
       system.stateVersion = "26.05";
-    }
+    })
   ];
 }
