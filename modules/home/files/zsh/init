@@ -1,0 +1,147 @@
+# NOTE: on NixOS do NOT prepend /usr/bin — nix profiles come first.
+# Only append classic dirs if they exist.
+for d in /usr/local/bin /usr/bin; do
+  case ":$PATH:" in *":$d:"*) ;; *) [ -d "$d" ] && export PATH="$PATH:$d" ;; esac
+done
+
+if command -v mise &> /dev/null; then
+  mise() {
+    unfunction mise
+    eval "$(command mise activate zsh)"
+    mise "$@"
+  }
+fi
+
+if command -v starship &> /dev/null; then
+  eval "$(starship init zsh)"
+fi
+
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+if command -v fzf &> /dev/null; then
+  # Modern fzf (>=0.48) ships its own zsh integration; Arch paths kept as fallback.
+  if fzf --zsh &>/dev/null; then
+    eval "$(fzf --zsh)"
+  else
+    for f in \
+      /run/current-system/sw/share/fzf/completion.zsh \
+      /run/current-system/sw/share/fzf/key-bindings.zsh \
+      /usr/share/fzf/completion.zsh \
+      /usr/share/fzf/key-bindings.zsh; do
+      [[ -f $f ]] && source "$f"
+    done
+  fi
+fi
+
+if command -v atuin &> /dev/null; then
+  export ATUIN_NOBIND=true
+  eval "$(atuin init zsh)"
+  bindkey "^R" atuin-search
+fi
+
+# Zsh plugins — NixOS-first, no sudo needed.
+# 1) Prefer packaged plugins in the system profile (after `nixos-rebuild`
+#    with zsh-fzf-tab, zsh-you-should-use, zsh-autosuggestions,
+#    zsh-fast-syntax-highlighting in configuration.nix).
+# 2) Fall back to a user-writable clone dir for anything not packaged.
+ZSH_PLUGIN_DIRS=(
+  /run/current-system/sw/share
+  /etc/profiles/per-user/$USER/share
+  $HOME/.nix-profile/share
+)
+ZSH_FALLBACK_HOME=$HOME/.local/share/zsh/plugins
+
+_zsh_try_source() {
+  local f
+  for f in "$@"; do
+    if [[ -f $f ]]; then
+      source "$f"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# fzf-tab. NOTE (NixOS): the per-user/system profiles only link an
+# allowlist of share/ subdirs (/share/zsh but NOT /share/fzf-tab), so the
+# packaged copy can never appear under /etc/profiles or /run/current-system.
+# The user-local git clone below is therefore the real loader on NixOS —
+# the store candidates are kept as harmless future-proof fallbacks.
+if ! _zsh_try_source \
+  /run/current-system/sw/share/fzf-tab/fzf-tab.plugin.zsh \
+  /etc/profiles/per-user/$USER/share/fzf-tab/fzf-tab.plugin.zsh \
+  $HOME/.nix-profile/share/fzf-tab/fzf-tab.plugin.zsh \
+  $ZSH_FALLBACK_HOME/aloxaf/fzf-tab/fzf-tab.plugin.zsh; then
+  if [[ ! -d $ZSH_FALLBACK_HOME/aloxaf/fzf-tab ]] && command -v git &>/dev/null; then
+    git clone --depth=1 https://github.com/aloxaf/fzf-tab "$ZSH_FALLBACK_HOME/aloxaf/fzf-tab" &>/dev/null && \
+      source "$ZSH_FALLBACK_HOME/aloxaf/fzf-tab/fzf-tab.plugin.zsh" 2>/dev/null || true
+  fi
+fi
+
+# zsh-autosuggestions (NixOS real path: share/zsh/plugins/zsh-autosuggestions/)
+_zsh_try_source \
+  /etc/profiles/per-user/$USER/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  $HOME/.nix-profile/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /run/current-system/sw/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  $ZSH_FALLBACK_HOME/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  $ZSH_FALLBACK_HOME/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh || {
+  if [[ ! -d $ZSH_FALLBACK_HOME/zsh-users/zsh-autosuggestions ]] && command -v git &>/dev/null; then
+    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "$ZSH_FALLBACK_HOME/zsh-users/zsh-autosuggestions" &>/dev/null || true
+    _zsh_try_source \
+      $ZSH_FALLBACK_HOME/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh \
+      $ZSH_FALLBACK_HOME/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh || true
+  fi
+}
+
+# fast-syntax-highlighting (NixOS real path: share/zsh/plugins/fast-syntax-highlighting/)
+if ! _zsh_try_source \
+  /etc/profiles/per-user/$USER/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh \
+  /run/current-system/sw/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh \
+  $HOME/.nix-profile/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh \
+  /run/current-system/sw/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh \
+  $ZSH_FALLBACK_HOME/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh; then
+  if [[ ! -d $ZSH_FALLBACK_HOME/zdharma-continuum/fast-syntax-highlighting ]] && command -v git &>/dev/null; then
+    git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting "$ZSH_FALLBACK_HOME/zdharma-continuum/fast-syntax-highlighting" &>/dev/null || true
+    _zsh_try_source $ZSH_FALLBACK_HOME/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh || true
+  fi
+fi
+
+# you-should-use (NixOS real path: share/zsh/plugins/you-should-use/)
+if ! _zsh_try_source \
+  /etc/profiles/per-user/$USER/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh \
+  /run/current-system/sw/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh \
+  $HOME/.nix-profile/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh \
+  /run/current-system/sw/share/zsh-you-should-use/you-should-use.plugin.zsh \
+  $ZSH_FALLBACK_HOME/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh; then
+  if [[ ! -d $ZSH_FALLBACK_HOME/MichaelAquilina/zsh-you-should-use ]] && command -v git &>/dev/null; then
+    git clone --depth=1 https://github.com/MichaelAquilina/zsh-you-should-use "$ZSH_FALLBACK_HOME/MichaelAquilina/zsh-you-should-use" &>/dev/null || true
+    _zsh_try_source $ZSH_FALLBACK_HOME/MichaelAquilina/zsh-you-should-use/you-should-use.plugin.zsh || true
+  fi
+fi
+unfunction _zsh_try_source 2>/dev/null || true
+
+if [ -d "$HOME/.local/share/pnpm" ]; then
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac 
+fi
+
+if [ -d "$HOME/.opencode/bin" ]; then
+  export PATH="$HOME/.opencode/bin:$PATH" 
+fi
+
+if [ -d "$HOME/.config/herd-lite/bin" ]; then
+  export PATH="/home/blackmage/.config/herd-lite/bin:$PATH"
+  export PHP_INI_SCAN_DIR="/home/blackmage/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+fi 
+
+if [ -d "$HOME/.config/nvm" ]; then
+  export NVM_DIR="$HOME/.config/nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
