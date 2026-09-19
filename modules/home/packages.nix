@@ -5,8 +5,6 @@
       home.packages = with pkgs; [
         neovim
         vim
-        kitty
-        foot
         impala
         tmux
         (brave.override {

@@ -5,6 +5,7 @@ in
 {
   config.sefirah.homeModules = [
     {
+      stylix.targets.tofi.enable = false;
       programs.tofi = {
         enable = true;
         settings = {

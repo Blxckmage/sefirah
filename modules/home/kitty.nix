@@ -1,48 +1,38 @@
-{ config, ... }:
-let
-  tc = config.sefirah.theme.withHashtag;
-in
+{ ... }:
 {
   config.sefirah.homeModules = [
     {
-      xdg.configFile."kitty/theme.d/everforest.conf".text = with tc; ''
-        background ${base00}
-        foreground ${base05}
-        selection_background ${base02}
-        selection_foreground ${base05}
-        url_color ${base0D}
-        cursor ${base05}
-        cursor_text_color ${base00}
-        active_border_color ${base0D}
-        inactive_border_color ${base01}
-        bell_border_color ${base0A}
-        active_tab_foreground ${base05}
-        active_tab_background ${base02}
-        inactive_tab_foreground ${base04}
-        inactive_tab_background ${base01}
-        color0 ${base00}
-        color1 ${base08}
-        color2 ${base0B}
-        color3 ${base0A}
-        color4 ${base0D}
-        color5 ${base0E}
-        color6 ${base0C}
-        color7 ${base05}
-        color8 ${base03}
-        color9 ${base08}
-        color10 ${base0B}
-        color11 ${base0A}
-        color12 ${base0D}
-        color13 ${base0E}
-        color14 ${base0C}
-        color15 ${base07}
-        color16 ${base09}
-        color17 ${base0F}
-        color18 ${base01}
-        color19 ${base02}
-        color20 ${base04}
-        color21 ${base06}
-      '';
+      stylix.targets.kitty.enable = true;
+      programs.kitty = {
+        enable = true;
+        settings = {
+          shell = "zsh";
+          disable_ligatures = "always";
+          symbol_map = "U+E000-U+F8FF Nerd Font Symbols";
+          window_padding_width = 14;
+          window_padding_height = 14;
+          hide_window_decorations = "yes";
+          show_window_resize_notification = "no";
+          confirm_os_window_close = "0";
+          single_instance = "yes";
+          allow_remote_control = "no";
+          cursor_shape = "block";
+          enable_audio_bell = "no";
+          shell_integration = "no-cursor";
+          cursor_trail = 3;
+          repaint_delay = 6;
+          input_delay = 2;
+          sync_to_monitor = "yes";
+          tab_bar_edge = "bottom";
+          tab_bar_style = "powerline";
+          tab_powerline_style = "slanted";
+        };
+        keybindings = {
+          "ctrl+-" = "change_font_size all -2";
+          "ctrl+=" = "change_font_size all +2";
+        };
+        extraConfig = "tab_title_template {title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
+      };
     }
   ];
 }

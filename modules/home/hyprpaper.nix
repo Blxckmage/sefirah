@@ -2,6 +2,7 @@
 {
   config.sefirah.homeModules = [
     {
+      stylix.targets.hyprpaper.enable = false;
       services.hyprpaper = {
         enable = true;
         settings = {

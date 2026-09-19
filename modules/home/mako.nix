@@ -1,10 +1,8 @@
-{ config, ... }:
-let
-  tc = config.sefirah.theme.withHashtag;
-in
+{ ... }:
 {
   config.sefirah.homeModules = [
     {
+      stylix.targets.mako.enable = true;
       services.mako = {
         enable = true;
         settings = {
@@ -16,10 +14,6 @@ in
           padding = "10,15";
           border-size = 2;
           max-icon-size = 32;
-          font = "monospace 11";
-          background-color = tc.base00;
-          text-color = tc.base05;
-          border-color = tc.base0B;
           border-radius = 6;
         };
         extraConfig = ''
