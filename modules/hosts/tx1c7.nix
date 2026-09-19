@@ -1,18 +1,15 @@
 { config, inputs, ... }:
+let
+  mkSystem = import ../../lib/mkSystem.nix { inherit inputs; };
+in
 {
-  flake.nixosConfigurations.sefirah = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.sefirah = mkSystem {
     system = "x86_64-linux";
-    modules = config.sefirah.nixosModules ++ [
-      inputs.home-manager.nixosModules.home-manager
+    hostname = "sefirah";
+    homeModules = config.sefirah.homeModules;
+    nixosModules = config.sefirah.nixosModules ++ [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-7th-gen
       ../../hardware-configuration.nix
-      {
-        networking.hostName = "sefirah";
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "hm-bak";
-        home-manager.users.blackmage.imports = config.sefirah.homeModules;
-      }
       # ThinkPad X1 7th gen (16 GB, iGPU-only) memory tuning for gaming.
       # Kept host-specific: other machines get their own sizing.
       # Mirrors Omarchy (zram-generator 90-omarchy.conf + 99-omarchy-sysctl.conf):
