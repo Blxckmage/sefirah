@@ -6,6 +6,8 @@
         neovim
         vim
         kitty
+        foot
+        impala
         tmux
         brave
         discord
