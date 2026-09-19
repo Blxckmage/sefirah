@@ -9,8 +9,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     themenix.url = "github:RGBCube/ThemeNix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {

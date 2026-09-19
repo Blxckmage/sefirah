@@ -4,7 +4,6 @@
     system = "x86_64-linux";
     modules = config.sefirah.nixosModules ++ [
       inputs.home-manager.nixosModules.home-manager
-      inputs.sops-nix.nixosModules.sops
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-7th-gen
       ../../hardware-configuration.nix
       {
@@ -12,8 +11,7 @@
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.backupFileExtension = "hm-bak";
-        home-manager.users.blackmage.imports =
-          config.sefirah.homeModules ++ [ inputs.sops-nix.homeManagerModules.sops ];
+        home-manager.users.blackmage.imports = config.sefirah.homeModules;
       }
       # ThinkPad X1 7th gen (16 GB, iGPU-only) memory tuning for gaming.
       # Kept host-specific: other machines get their own sizing.
