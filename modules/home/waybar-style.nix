@@ -17,7 +17,7 @@ in
           border-radius: 0;
           min-height: 0;
         font-family: 'CaskaydiaMono Nerd Font';
-        font-size: 14px;
+        font-size: 13px;
         }
 
         .modules-left {
