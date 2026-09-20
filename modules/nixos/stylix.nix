@@ -43,6 +43,14 @@
           font-packages.enable = true;
         };
       };
+
+      fonts.fontconfig = {
+        antialias = true;
+        hinting.enable = true;
+        hinting.style = "full";
+        subpixel.rgba = "rgb";
+        subpixel.lcdfilter = "default";
+      };
     })
   ];
 }
