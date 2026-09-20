@@ -22,9 +22,14 @@ o.window(
 o.window("keybinds", { float = true, center = true, size = "880 560" })
 
 -- Waybar popups: foot TUIs and pavucontrol float centered, never split.
-o.window("waybar%-btop", { float = true, center = true, size = "1000 620" })
-o.window("waybar%-wifi", { float = true, center = true, size = "900 600" })
+-- NOTE: match strings go to Hyprland's regex engine, not Lua patterns,
+-- so plain "waybar-wifi" (a Lua "%-" escape would add a literal % here).
+o.window("waybar-btop", { float = true, center = true, size = "1000 620" })
+o.window("waybar-wifi", { float = true, center = true, size = "900 600" })
 o.window("[Pp]avucontrol", { float = true, center = true, size = "900 620" })
+
+-- Bitwarden extension popup in Brave floats centered.
+o.window({ class = "brave-browser", title = "[Bb]itwarden" }, { float = true, center = true, size = "400 620" })
 
 -- App-specific tweaks live here (keep file loadable without omarchy).
 -- e.g. o.window("firefox", { opacity = "1.0 1.0" }) to opt out of default opacity.
