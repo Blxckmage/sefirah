@@ -35,6 +35,7 @@
         libnotify
         brightnessctl
         playerctl
+        wiremix
         grim
         slurp
         satty

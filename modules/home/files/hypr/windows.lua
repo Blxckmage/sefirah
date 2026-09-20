@@ -26,6 +26,7 @@ o.window("keybinds", { float = true, center = true, size = "880 560" })
 -- so plain "waybar-wifi" (a Lua "%-" escape would add a literal % here).
 o.window("waybar-btop", { float = true, center = true, size = "1000 620" })
 o.window("waybar-wifi", { float = true, center = true, size = "900 600" })
+o.window("waybar-audio", { float = true, center = true, size = "900 600" })
 o.window("[Pp]avucontrol", { float = true, center = true, size = "900 620" })
 
 -- Bitwarden extension popup in Brave floats centered.
