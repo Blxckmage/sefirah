@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   config.sefirah.homeModules = [
     ({ pkgs, ... }: {
@@ -7,6 +7,7 @@
         vim
         impala
         tmux
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
         (brave.override {
           commandLineArgs = "--force-device-scale-factor=1";
         })
