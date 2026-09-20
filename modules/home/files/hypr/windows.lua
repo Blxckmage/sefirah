@@ -29,7 +29,9 @@ o.window("waybar-wifi", { float = true, center = true, size = "900 600" })
 o.window("[Pp]avucontrol", { float = true, center = true, size = "900 620" })
 
 -- Bitwarden extension popup in Brave floats centered.
-o.window({ class = "brave-browser", title = "[Bb]itwarden" }, { float = true, center = true, size = "400 620" })
+-- class is brave-<extension-id>-Default, title is Bitwarden (no forced
+-- size: extension popups already size themselves, just center them).
+o.window({ class = "brave-.*-Default", title = "[Bb]itwarden" }, { float = true, center = true })
 
 -- App-specific tweaks live here (keep file loadable without omarchy).
 -- e.g. o.window("firefox", { opacity = "1.0 1.0" }) to opt out of default opacity.
