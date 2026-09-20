@@ -50,7 +50,7 @@
   "cpu": {
     "interval": 5,
     "format": "󰍛",
-    "on-click": "foot --app-id waybar-btop -e btop"
+    "on-click": "foot --app-id waybar-btop -o main.pad=16x16 -e btop"
   },
   "clock": {
     "format": "{:L%A %H:%M}",
@@ -68,7 +68,7 @@
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
     "spacing": 1,
-    "on-click": "foot --app-id waybar-wifi -e impala"
+    "on-click": "foot --app-id waybar-wifi -o main.pad=16x16 -e impala"
   },
   "battery": {
     "format": "{capacity}% {icon}",
@@ -99,7 +99,7 @@
   },
   "pulseaudio": {
     "format": "{icon}",
-    "on-click": "foot --app-id waybar-audio -e wiremix",
+    "on-click": "foot --app-id waybar-audio -o main.pad=16x16 -e wiremix",
     "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
