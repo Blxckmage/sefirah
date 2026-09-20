@@ -20,6 +20,12 @@
 
       nixpkgs.config.allowUnfree = true;
 
+      nix.gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 7d";
+      };
+
       environment.systemPackages = with pkgs; [ wget ];
 
       system.stateVersion = "26.05";
