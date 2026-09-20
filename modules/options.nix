@@ -1,10 +1,5 @@
 { lib, ... }:
 {
-  options.sefirah.theme = lib.mkOption {
-    type = lib.types.attrs;
-    description = "Single ThemeNix palette for the whole setup.";
-  };
-
   options.sefirah.nixosModules = lib.mkOption {
     type = lib.types.listOf lib.types.deferredModule;
     default = [ ];

@@ -287,8 +287,7 @@
         "import-tree": "import-tree",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
-        "stylix": "stylix",
-        "themenix": "themenix"
+        "stylix": "stylix"
       }
     },
     "stylix": {
@@ -337,21 +336,6 @@
         "owner": "nix-systems",
         "ref": "future-26.11",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "themenix": {
-      "locked": {
-        "lastModified": 1770999457,
-        "narHash": "sha256-018znIdT/TBFsNcDYv6l4NCnK96gDiJMODoIGqnVn7o=",
-        "owner": "RGBCube",
-        "repo": "ThemeNix",
-        "rev": "3779a7ba289d88ea092063e8bc512cfe80f293ba",
-        "type": "github"
-      },
-      "original": {
-        "owner": "RGBCube",
-        "repo": "ThemeNix",
         "type": "github"
       }
     },

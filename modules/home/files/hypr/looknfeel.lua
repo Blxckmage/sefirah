@@ -1,6 +1,6 @@
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 
--- Border colors: generated from ThemeNix (home.nix -> hypr/theme/colors.lua).
+-- Border colors: generated from Stylix palette (nixpkgs -> hypr/theme/colors.lua).
 -- pcall fallback keeps Hyprland loadable before the first rebuild that
 -- installs the generated file; values mirror Everforest dark-hard.
 local theme_ok, theme_colors = pcall(require, "theme.colors")

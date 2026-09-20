@@ -1,9 +1,10 @@
-{ config, ... }:
-let
-  tc = config.sefirah.theme.withHashtag;
-in
+{ ... }:
 {
   config.sefirah.homeModules = [
+    ({ config, ... }:
+    let
+      tc = config.lib.stylix.colors.withHashtag;
+    in
     {
       stylix.targets.tofi.enable = false;
       programs.tofi = {
@@ -37,6 +38,6 @@ in
           clip-to-padding = true;
         };
       };
-    }
+    })
   ];
 }

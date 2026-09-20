@@ -1,9 +1,10 @@
-{ config, ... }:
-let
-  tc = config.sefirah.theme.withHashtag;
-in
+{ ... }:
 {
   config.sefirah.homeModules = [
+    ({ config, ... }:
+    let
+      tc = config.lib.stylix.colors.withHashtag;
+    in
     {
       xdg.configFile."waybar/style.css".text = ''
         @define-color background ${tc.base00};
@@ -76,6 +77,6 @@ in
           opacity: 0;
         }
       '';
-    }
+    })
   ];
 }
