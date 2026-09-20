@@ -17,8 +17,8 @@
             name = "CaskaydiaMono Nerd Font";
           };
           sansSerif = {
-            package = pkgs.cantarell-fonts;
-            name = "Cantarell";
+            package = pkgs.nerd-fonts.caskaydia-mono;
+            name = "CaskaydiaMono Nerd Font";
           };
           serif = {
             package = pkgs.dejavu_fonts;
