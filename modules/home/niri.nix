@@ -1,7 +1,7 @@
 { ... }:
 {
   config.sefirah.homeModules = [
-    ({ pkgs, ... }:
+    ({ config, lib, pkgs, ... }:
     let
       # Guard for Niri-only idle commands: swayidle runs on both compositors
       # (same graphical-session.target), so lock commands must no-op on Hyprland
@@ -24,6 +24,43 @@
         # (default), so XWayland apps like Steam keep working on Niri.
       ];
 
+      # Theme include (Stylix -> Niri layout), merged over the vendored
+      # defaults via include-positionality. Mirrors hypr/theme/colors.lua:
+      # active gradient base0D->base0B @45deg, inactive base02.
+      xdg.configFile."niri/sefirah-theme.kdl".text =
+        let
+          tc = config.lib.stylix.colors.withHashtag;
+          hx = hex: lib.toLower (lib.removePrefix "#" hex);
+        in
+        ''
+          // Generated from Stylix palette. Do not hand-edit.
+          layout {
+              // Hyprland gaps_in 5 / gaps_out 10.
+              gaps 5
+              struts {
+                  left 10
+                  right 10
+                  top 10
+                  bottom 10
+              }
+              // Single-frame look like Hyprland: border on, focus ring off.
+              focus-ring {
+                  off
+              }
+              border {
+                  // Explicit on: in an included file, bare border {} is a no-op.
+                  on
+                  width 2
+                  active-gradient from="#${hx tc.base0D}" to="#${hx tc.base0B}" angle=45
+                  inactive-color "#${hx tc.base02}aa"
+                  urgent-color "#${hx tc.base08}"
+              }
+          }
+          overview {
+              backdrop-color "#${hx tc.base00}"
+          }
+        '';
+
       wayland.windowManager.niri = {
         enable = true;
         # Same package programs.niri installs: no version drift, and it turns
@@ -38,7 +75,10 @@
         # files/niri/default-config.kdl (minus its `spawn-at-startup "waybar"`.
         # which would duplicate the systemd bar service). Included first ...
         enableDefaultConfig = false;
-        extraConfigEarly = builtins.readFile ./files/niri/default-config.kdl;
+        extraConfigEarly = builtins.readFile ./files/niri/default-config.kdl + ''
+          // sefirah: Stylix theme include (merges over vendored layout above).
+          include "/home/blackmage/.config/niri/sefirah-theme.kdl"
+        '';
         settings = { };
         # ... then only session essentials appended after it. Binds merge
         # per-key with the defaults, so Mod+Return/Mod+D below only add to
