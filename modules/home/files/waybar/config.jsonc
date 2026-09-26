@@ -17,6 +17,8 @@
   ],
   "hyprland/workspaces": {
     "format": "{icon}",
+    "tooltip": false,
+    "cursor": "pointer",
     "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
     "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'",
     "format-icons": {
@@ -43,9 +45,9 @@
   },
   "custom/nixos": {
     "format": "",
-    "on-click": "hyprlauncher",
+    "on-click": "tofi-drun --drun-launch=true",
     "on-click-right": "kitty",
-    "tooltip-format": "Launcher\n\nSuper + Space"
+    "tooltip-format": "Launcher\n\nSuper + D"
   },
   "cpu": {
     "interval": 5,
