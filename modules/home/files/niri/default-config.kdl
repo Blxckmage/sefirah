@@ -442,6 +442,8 @@ binds {
     Mod+O repeat=false { toggle-overview; }
 
     Mod+Q repeat=false { close-window; }
+    // sefirah: Hyprland SUPER+SHIFT+Q parity (Niri quit is untouched on Mod+Shift+E).
+    Mod+Shift+Q hotkey-overlay-title="Close window" { close-window; }
 
     Mod+Left  { focus-column-left; }
     Mod+Down  { focus-window-down; }
@@ -576,6 +578,20 @@ binds {
     Mod+Ctrl+8 { move-column-to-workspace 8; }
     Mod+Ctrl+9 { move-column-to-workspace 9; }
 
+    // sefirah: move the focused window (not the column), Hyprland parity.
+    // Niri may focus the target workspace; Hyprland moved silently.
+    Mod+Shift+1 hotkey-overlay-title="Move window to workspace 1" { move-window-to-workspace 1; }
+    Mod+Shift+2 hotkey-overlay-title="Move window to workspace 2" { move-window-to-workspace 2; }
+    Mod+Shift+3 hotkey-overlay-title="Move window to workspace 3" { move-window-to-workspace 3; }
+    Mod+Shift+4 hotkey-overlay-title="Move window to workspace 4" { move-window-to-workspace 4; }
+    Mod+Shift+5 hotkey-overlay-title="Move window to workspace 5" { move-window-to-workspace 5; }
+    Mod+Shift+6 hotkey-overlay-title="Move window to workspace 6" { move-window-to-workspace 6; }
+    Mod+Shift+7 hotkey-overlay-title="Move window to workspace 7" { move-window-to-workspace 7; }
+    Mod+Shift+8 hotkey-overlay-title="Move window to workspace 8" { move-window-to-workspace 8; }
+    Mod+Shift+9 hotkey-overlay-title="Move window to workspace 9" { move-window-to-workspace 9; }
+    Mod+0 hotkey-overlay-title="Switch to workspace 10" { focus-workspace 10; }
+    Mod+Shift+0 hotkey-overlay-title="Move window to workspace 10" { move-window-to-workspace 10; }
+
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
 
@@ -604,8 +620,9 @@ binds {
     Mod+Ctrl+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R { reset-window-height; }
 
-    Mod+F { maximize-column; }
-    Mod+Shift+F { fullscreen-window; }
+    // sefirah: Hyprland order (upstream ships these two swapped).
+    Mod+F { fullscreen-window; }
+    Mod+Shift+F { maximize-column; }
 
     // While maximize-column leaves gaps and borders around the window,
     // maximize-window-to-edges doesn't: the window expands to the edges of the screen.
@@ -639,6 +656,8 @@ binds {
 
     // Move the focused window between the floating and the tiling layout.
     Mod+V       { toggle-window-floating; }
+    // sefirah: Hyprland SUPER+SHIFT+SPACE parity.
+    Mod+Shift+Space hotkey-overlay-title="Toggle floating" { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
