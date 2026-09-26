@@ -566,7 +566,10 @@ binds {
     Mod+BracketRight { consume-or-expel-window-right; }
 
     // Consume one window from the right to the bottom of the focused column.
-    Mod+Comma  { consume-window-into-column; }
+    // sefirah: Mod+Comma is the clipboard picker (Hyprland parity); consume
+    // moves to Mod+Shift+Comma (was unbound). Watchers run via spawn-at-startup.
+    Mod+Shift+Comma { consume-window-into-column; }
+    Mod+Comma hotkey-overlay-title="Clipboard" { spawn-sh "cliphist list | tofi --prompt-text 'Clipboard' | cliphist decode | wl-copy"; }
     // Expel the bottom window from the focused column to the right.
     Mod+Period { expel-window-from-column; }
 
@@ -631,6 +634,8 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
+    // sefirah: Hyprland-style area screenshot into satty for annotation.
+    Shift+Print hotkey-overlay-title="Screenshot (annotate)" { spawn-sh "grim -g \"$(slurp)\" - | satty --filename -"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
@@ -649,4 +654,9 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+}
+
+// sefirah: close lid -> lock (mirrors the Hyprland Lid Switch bind).
+switch-events {
+    lid-close { spawn "swaylock"; }
 }

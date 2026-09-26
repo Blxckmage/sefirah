@@ -7,10 +7,17 @@
 # which silently killed `hyprlock &` and the logout.
 set -u
 
+# Locker follows the running compositor (shared by Hyprland and Niri bars).
+if niri msg outputs >/dev/null 2>&1; then
+  locker=swaylock
+else
+  locker=hyprlock
+fi
+
 choice=$(printf 'Lock\nSuspend\nRelaunch\nReboot\nPower off' | tofi --prompt-text "Power: ")
 
 case "$choice" in
-  Lock) exec hyprlock ;;
+  Lock) exec "$locker" ;;
   Suspend) exec systemctl suspend ;;
   Relaunch) exec uwsm stop ;;
   Reboot) exec systemctl reboot ;;
