@@ -24,43 +24,6 @@
         # (default), so XWayland apps like Steam keep working on Niri.
       ];
 
-      # Theme include (Stylix -> Niri layout), merged over the vendored
-      # defaults via include-positionality. Mirrors hypr/theme/colors.lua:
-      # active gradient base0D->base0B @45deg, inactive base02.
-      xdg.configFile."niri/sefirah-theme.kdl".text =
-        let
-          tc = config.lib.stylix.colors.withHashtag;
-          hx = hex: lib.toLower (lib.removePrefix "#" hex);
-        in
-        ''
-          // Generated from Stylix palette. Do not hand-edit.
-          layout {
-              // Hyprland gaps_in 5 / gaps_out 10.
-              gaps 5
-              struts {
-                  left 10
-                  right 10
-                  top 10
-                  bottom 10
-              }
-              // Single-frame look like Hyprland: border on, focus ring off.
-              focus-ring {
-                  off
-              }
-              border {
-                  // Explicit on: in an included file, bare border {} is a no-op.
-                  on
-                  width 2
-                  active-gradient from="#${hx tc.base0D}" to="#${hx tc.base0B}" angle=45
-                  inactive-color "#${hx tc.base02}aa"
-                  urgent-color "#${hx tc.base08}"
-              }
-          }
-          overview {
-              backdrop-color "#${hx tc.base00}"
-          }
-        '';
-
       wayland.windowManager.niri = {
         enable = true;
         # Same package programs.niri installs: no version drift, and it turns
@@ -75,10 +38,30 @@
         # files/niri/default-config.kdl (minus its `spawn-at-startup "waybar"`.
         # which would duplicate the systemd bar service). Included first ...
         enableDefaultConfig = false;
-        extraConfigEarly = builtins.readFile ./files/niri/default-config.kdl + ''
-          // sefirah: Stylix theme include (merges over vendored layout above).
-          include "/home/blackmage/.config/niri/sefirah-theme.kdl"
-        '';
+        extraConfigEarly =
+          let
+            tc = config.lib.stylix.colors.withHashtag;
+            hx = hex: lib.toLower (lib.removePrefix "#" hex);
+            patch = from: to: prev:
+              let next = lib.replaceStrings [ from ] [ to ] prev;
+              in assert lib.assertMsg (next != prev) "niri theme anchor missing";
+              next;
+            # Mirrors hypr/theme/colors.lua: active base0D->base0B @45deg.
+            ag = "active-gradient from=\"#" + hx tc.base0D + "\" to=\"#"
+              + hx tc.base0B + "\" angle=45";
+            src = builtins.readFile ./files/niri/default-config.kdl;
+          in
+          patch "    gaps 16"
+            "    // sefirah: Hyprland gaps_in 5.\n    gaps 5"
+          (patch "        // left 64\n        // right 64\n        // top 64\n        // bottom 64"
+            "        // sefirah: Hyprland gaps_out 10 as outer gaps.\n        left 10\n        right 10\n        top 10\n        bottom 10"
+          (patch "        // Uncomment this line to disable the focus ring.\n        // off"
+            "        // sefirah: single-frame Hyprland look, ring off.\n        off"
+          (patch "        off\n\n        width 4\n        active-color \"#ffc87f\"\n        inactive-color \"#505050\""
+            ("        // sefirah: Hyprland border_size 2, Stylix gradient.\n        on\n\n        width 2\n        " + ag + "\n        inactive-color \"#" + hx tc.base02 + "aa\"")
+          (patch "        urgent-color \"#9b0000\""
+            "        urgent-color \"#${hx tc.base08}\""
+            src))));
         settings = { };
         # ... then only session essentials appended after it. Binds merge
         # per-key with the defaults, so Mod+Return/Mod+D below only add to
@@ -106,6 +89,11 @@
 
           // (Launch binds live in the vendored binds block above: Mod+Return
           // kitty, Mod+D tofi-drun. A second binds {} node is a parse error.)
+
+          // sefirah: Stylix backdrop (no overview section upstream to clash with).
+          overview {
+              backdrop-color "${config.lib.stylix.colors.withHashtag.base00}"
+          }
         '';
       };
 
