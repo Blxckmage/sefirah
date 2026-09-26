@@ -338,6 +338,46 @@ window-rule {
     clip-to-geometry true
 }
 
+// sefirah: window rules ported from Hyprland windows.lua.
+// Default translucency (Hyprland default-opacity rule: active 0.985, inactive 0.96).
+window-rule {
+    match is-active=true
+    opacity 0.985
+}
+
+window-rule {
+    match is-active=false
+    opacity 0.96
+}
+
+// Waybar popups (foot TUIs) and pavucontrol float (Hyprland parity;
+// Niri centers floating windows by default, sizes come from the app).
+window-rule {
+    match app-id="waybar-btop"
+    open-floating true
+}
+
+window-rule {
+    match app-id="waybar-wifi"
+    open-floating true
+}
+
+window-rule {
+    match app-id="waybar-audio"
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^org\.pulseaudio\.pavucontrol$"#
+    open-floating true
+}
+
+// Bitwarden extension popup in Brave floats (Hyprland parity).
+window-rule {
+    match app-id=r#"^brave-.*-Default$"# title=r#"^[Bb]itwarden$"#
+    open-floating true
+}
+
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
@@ -642,6 +682,9 @@ binds {
     Mod+Ctrl+Space hotkey-overlay-title="Wallpaper picker" { spawn "/home/blackmage/.config/hypr/scripts/wallpaper-tofi.sh"; }
     // Close all windows on the focused workspace.
     Mod+Ctrl+Delete hotkey-overlay-title="Close all windows" { spawn "/home/blackmage/.config/hypr/scripts/close-all.sh"; }
+    // Window transparency toggle (Hyprland SUPER+BACKSPACE parity; Niri
+    // toggles the focused window, which always has the rule above).
+    Mod+Backspace hotkey-overlay-title="Toggle window transparency" { toggle-window-rule-opacity; }
     // Idle-lock toggle (swayidle user service; Hyprland toggles hypridle).
     Mod+Alt+I hotkey-overlay-title="Toggle locking on idle" { spawn-sh "sh -c 'if systemctl --user is-active --quiet swayidle.service; then systemctl --user stop swayidle.service && notify-send \"Idle lock\" \"Off\"; else systemctl --user start swayidle.service && notify-send \"Idle lock\" \"On\"; fi'"; }
     // Nightlight toggle (gammastep; hyprsunset is Hyprland-only and exits on Niri).
