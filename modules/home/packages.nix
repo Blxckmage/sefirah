@@ -11,7 +11,10 @@
         (brave.override {
           commandLineArgs = "--force-device-scale-factor=1";
         })
-        discord
+        (discord.override {
+          withOpenASAR = true;
+          withVencord = true;
+        })
         gcc
         rustc
         cargo
@@ -80,6 +83,12 @@
         '')
         motrix-next
         spotify
+        (inputs.spotifast.packages.${pkgs.stdenv.hostPlatform.system}.spotifast.overrideAttrs {
+          # Upstream `nix build .#default` runs full `cargo test` in checkPhase;
+          # that hangs in the Nix sandbox here (>30m, blocks activate).
+          # CI already covers tests — skip them for the local install.
+          doCheck = false;
+        })
         thinkfan-tui
         lm_sensors
       ];
