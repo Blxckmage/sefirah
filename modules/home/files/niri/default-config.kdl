@@ -22,9 +22,10 @@ input {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
 
-            // For example:
-            // layout "us,ru"
-            // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+            // sefirah: match Hyprland input.lua (vconsole is us here;
+            // non-Latin auto-prepend logic lives only in Hyprland config).
+            layout "us"
+            options "compose:caps,shift:both_capslock_cancel"
 
             // If this section is empty, niri will fetch xkb settings
             // from org.freedesktop.locale1. You can control these using
@@ -33,6 +34,10 @@ input {
 
         // Enable numlock on startup, omitting this setting disables it.
         numlock
+
+        // sefirah: Hyprland repeat_rate 40 / repeat_delay 250.
+        repeat-rate 40
+        repeat-delay 250
     }
 
     // Next sections include libinput settings.
@@ -46,6 +51,9 @@ input {
         // drag false
         // drag-lock
         natural-scroll
+        // sefirah: Hyprland clickfinger_behavior + scroll_factor 0.4.
+        click-method "clickfinger"
+        scroll-factor 0.4
         // accel-speed 0.2
         // accel-profile "flat"
         // scroll-method "two-finger"
@@ -76,7 +84,8 @@ input {
 
     // Focus windows and outputs automatically when moving the mouse into them.
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
-    // focus-follows-mouse max-scroll-amount="0%"
+    // sefirah: Hyprland follow_mouse=1.
+    focus-follows-mouse max-scroll-amount="0%"
 }
 
 // You can configure outputs by their name, which you can find
@@ -85,40 +94,14 @@ input {
 // Find more information on the wiki:
 // https://niri-wm.github.io/niri/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
-/-output "eDP-1" {
-    // Uncomment this line to disable this output.
-    // off
-
-    // Resolution and, optionally, refresh rate of the output.
-    // The format is "<width>x<height>" or "<width>x<height>@<refresh rate>".
-    // If the refresh rate is omitted, niri will pick the highest refresh rate
-    // for the resolution.
-    // If the mode is omitted altogether or is invalid, niri will pick one automatically.
-    // Run `niri msg outputs` while inside a niri instance to list all outputs and their modes.
-    mode "1920x1080@120.030"
-
-    // You can use integer or fractional scale, for example use 1.5 for 150% scale.
-    scale 2
-
-    // Transform allows to rotate the output counter-clockwise, valid values are:
-    // normal, 90, 180, 270, flipped, flipped-90, flipped-180 and flipped-270.
+// sefirah: single laptop panel (hyprctl monitors: BOE 1920x1080@60).
+// Hyprland parity: 1920x1080@60 at scale 1.2. Position unset (auto) —
+// add output blocks when docking external displays.
+output "eDP-1" {
+    mode "1920x1080@60"
+    scale 1.2
     transform "normal"
-
-    // Position of the output in the global coordinate space.
-    // This affects directional monitor actions like "focus-monitor-left", and cursor movement.
-    // The cursor can only move between directly adjacent outputs.
-    // Output scale and rotation has to be taken into account for positioning:
-    // outputs are sized in logical, or scaled, pixels.
-    // For example, a 3840×2160 output with scale 2.0 will have a logical size of 1920×1080,
-    // so to put another output directly adjacent to it on the right, set its x to 1920.
-    // If the position is unset or results in an overlap, the output is instead placed
-    // automatically.
-    position x=1280 y=0
 }
-
-// Settings that influence how windows are positioned and sized.
-// Find more information on the wiki:
-// https://niri-wm.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
     gaps 16
