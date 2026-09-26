@@ -29,8 +29,14 @@ src="$WALL_DIR/$pick"
 [ -f "$src" ] || { notify-send "Wallpapers" "Not found: $pick"; exit 1; }
 
 ln -sf "$src" "$LINK"
-# Hyprland >= 0.55: only `wallpaper MONITOR,PATH[,FIT]` exists
-# (preload/unload were removed; preloading is automatic).
-hyprctl hyprpaper wallpaper "eDP-1,$LINK" >/dev/null 2>&1 \
-  || hyprctl hyprpaper wallpaper ",$LINK" >/dev/null 2>&1
+if niri msg outputs >/dev/null 2>&1; then
+  # swaybg has no IPC: restart it against the repointed symlink.
+  pkill -x swaybg 2>/dev/null || true
+  swaybg -i "$LINK" -m fill >/dev/null 2>&1 &
+else
+  # Hyprland >= 0.55: only `wallpaper MONITOR,PATH[,FIT]` exists
+  # (preload/unload were removed; preloading is automatic).
+  hyprctl hyprpaper wallpaper "eDP-1,$LINK" >/dev/null 2>&1 \
+    || hyprctl hyprpaper wallpaper ",$LINK" >/dev/null 2>&1
+fi
 notify-send "Wallpaper" "$pick"

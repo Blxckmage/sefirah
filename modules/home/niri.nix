@@ -19,6 +19,7 @@
         swaylock
         swayidle
         swaybg
+        gammastep # nightlight on Niri (hyprsunset needs Hyprland IPC)
         # xwayland-satellite arrives via wayland.windowManager.niri below
         # (default), so XWayland apps like Steam keep working on Niri.
       ];

@@ -637,6 +637,33 @@ binds {
     // sefirah: Hyprland-style area screenshot into satty for annotation.
     Shift+Print hotkey-overlay-title="Screenshot (annotate)" { spawn-sh "grim -g \"$(slurp)\" - | satty --filename -"; }
 
+    // sefirah: utilities ported from Hyprland bindings/utilities.lua.
+    // Lock stays on the default Super+Alt+L (swaylock). Quit stays on
+    // Ctrl+Alt+Delete / Mod+Shift+E. Touchpad toggle, zoom, gaps and
+    // transparency toggles have no Niri equivalent and are dropped.
+    // Power menu (Hyprland: Mod+Escape, taken here by shortcut-inhibit).
+    Mod+Ctrl+Escape hotkey-overlay-title="Power menu" { spawn "/home/blackmage/.config/hypr/scripts/power-tofi.sh"; }
+    // Activity monitor (kitty + btop).
+    Mod+Ctrl+T hotkey-overlay-title="Activity" { spawn "kitty" "btop"; }
+    // Calculator.
+    Mod+Ctrl+Q hotkey-overlay-title="Calculator" { spawn "qalculate-gtk"; }
+    // File manager stays unbound (Mod+Shift+E is Niri quit); use tofi.
+    // Mako dismiss (Hyprland dismiss-all was Mod+Shift+Comma, taken here by consume).
+    Mod+Alt+Comma hotkey-overlay-title="Dismiss last notification" { spawn "makoctl" "dismiss"; }
+    Mod+Alt+Period hotkey-overlay-title="Dismiss all notifications" { spawn "makoctl" "dismiss" "--all"; }
+    // Bar toggle (SIGUSR1 flips waybar; starts it if not running).
+    Mod+Alt+Space hotkey-overlay-title="Toggle top bar" { spawn-sh "pkill -USR1 waybar || systemctl --user start waybar.service"; }
+    // Keybinding cheat sheet (Niri-aware script, middle of binds.lua era gone).
+    Mod+Alt+K hotkey-overlay-title="Show key bindings" { spawn "kitty" "/home/blackmage/.config/hypr/scripts/keybinds.sh"; }
+    // Wallpaper picker (tofi over ~/Pictures/wallpapers, swaybg backend).
+    Mod+Ctrl+Space hotkey-overlay-title="Wallpaper picker" { spawn "/home/blackmage/.config/hypr/scripts/wallpaper-tofi.sh"; }
+    // Close all windows on the focused workspace.
+    Mod+Ctrl+Delete hotkey-overlay-title="Close all windows" { spawn "/home/blackmage/.config/hypr/scripts/close-all.sh"; }
+    // Idle-lock toggle (swayidle user service; Hyprland toggles hypridle).
+    Mod+Alt+I hotkey-overlay-title="Toggle locking on idle" { spawn-sh "sh -c 'if systemctl --user is-active --quiet swayidle.service; then systemctl --user stop swayidle.service && notify-send \"Idle lock\" \"Off\"; else systemctl --user start swayidle.service && notify-send \"Idle lock\" \"On\"; fi'"; }
+    // Nightlight toggle (gammastep; hyprsunset is Hyprland-only and exits on Niri).
+    Mod+Ctrl+N hotkey-overlay-title="Toggle nightlight" { spawn-sh "sh -c 'if pkill -x gammastep; then notify-send \"Nightlight\" \"Off\"; else gammastep -O 3500 >/dev/null 2>&1 & notify-send \"Nightlight\" \"On\"; fi'"; }
+
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
     // so they may, for example, forward the key presses as-is to a remote machine.
