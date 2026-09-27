@@ -585,23 +585,6 @@ binds {
     Mod+Ctrl+8 { move-column-to-workspace 8; }
     Mod+Ctrl+9 { move-column-to-workspace 9; }
 
-    // sefirah: move the focused window (not the column), Hyprland parity.
-    // Niri may focus the target workspace; Hyprland moved silently.
-    Mod+Shift+1 hotkey-overlay-title="Move window to workspace 1" { move-window-to-workspace 1; }
-    Mod+Shift+2 hotkey-overlay-title="Move window to workspace 2" { move-window-to-workspace 2; }
-    Mod+Shift+3 hotkey-overlay-title="Move window to workspace 3" { move-window-to-workspace 3; }
-    Mod+Shift+4 hotkey-overlay-title="Move window to workspace 4" { move-window-to-workspace 4; }
-    Mod+Shift+5 hotkey-overlay-title="Move window to workspace 5" { move-window-to-workspace 5; }
-    Mod+Shift+6 hotkey-overlay-title="Move window to workspace 6" { move-window-to-workspace 6; }
-    Mod+Shift+7 hotkey-overlay-title="Move window to workspace 7" { move-window-to-workspace 7; }
-    Mod+Shift+8 hotkey-overlay-title="Move window to workspace 8" { move-window-to-workspace 8; }
-    Mod+Shift+9 hotkey-overlay-title="Move window to workspace 9" { move-window-to-workspace 9; }
-    Mod+0 hotkey-overlay-title="Switch to workspace 10" { focus-workspace 10; }
-    Mod+Shift+0 hotkey-overlay-title="Move window to workspace 10" { move-window-to-workspace 10; }
-    // sefirah: scratchpad-lite (no Niri scratchpad exists). First focus
-    // auto-creates it; no auto-hide on second press unlike Hyprland.
-    Mod+grave hotkey-overlay-title="Scratch workspace" { focus-workspace "scratch"; }
-    Mod+Shift+grave hotkey-overlay-title="Send to scratch" { move-window-to-workspace "scratch"; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
