@@ -398,6 +398,13 @@ binds {
     // sefirah: kitty is our terminal (alacritty/fuzzel not installed).
     Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
     Mod+D hotkey-overlay-title="Run an Application: tofi" { spawn "tofi-drun" "--drun-launch=true"; }
+    // sefirah: Hyprland SUPER+SHIFT+W parity.
+    Mod+Shift+W hotkey-overlay-title="Browser" { spawn "brave"; }
+    // sefirah: Hyprland SUPER+TAB parity (Niri dynamic indices, not e+-1).
+    Mod+Tab { focus-workspace-down; }
+    Mod+Shift+Tab { focus-workspace-up; }
+    // sefirah: nautilus had no bind (Mod+Shift+E is Niri quit, see below).
+    Mod+E hotkey-overlay-title="File manager" { spawn "nautilus"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
@@ -591,6 +598,10 @@ binds {
     Mod+Shift+9 hotkey-overlay-title="Move window to workspace 9" { move-window-to-workspace 9; }
     Mod+0 hotkey-overlay-title="Switch to workspace 10" { focus-workspace 10; }
     Mod+Shift+0 hotkey-overlay-title="Move window to workspace 10" { move-window-to-workspace 10; }
+    // sefirah: scratchpad-lite (no Niri scratchpad exists). First focus
+    // auto-creates it; no auto-hide on second press unlike Hyprland.
+    Mod+grave hotkey-overlay-title="Scratch workspace" { focus-workspace "scratch"; }
+    Mod+Shift+grave hotkey-overlay-title="Send to scratch" { move-window-to-workspace "scratch"; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
@@ -720,7 +731,8 @@ binds {
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
-    Mod+Shift+E { quit; }
+    // sefirah: Hyprland SUPER+SHIFT+E parity (quit lives on Ctrl+Alt+Delete).
+    Mod+Shift+E hotkey-overlay-title="File manager" { spawn "nautilus"; }
     Ctrl+Alt+Delete { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
