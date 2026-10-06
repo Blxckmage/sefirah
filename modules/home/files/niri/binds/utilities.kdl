@@ -1,0 +1,19 @@
+    Mod+Comma hotkey-overlay-title="Clipboard" { spawn-sh "cliphist list | tofi --prompt-text 'Clipboard' | cliphist decode | wl-copy"; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+    Shift+Print hotkey-overlay-title="Screenshot (annotate)" { spawn-sh "grim -g \"$(slurp)\" - | satty --filename -"; }
+
+    Mod+Escape hotkey-overlay-title="Power menu" { spawn "@@SCRIPTS@@/power-tofi.sh"; }
+    Mod+Ctrl+T hotkey-overlay-title="Activity" { spawn "kitty" "btop"; }
+    Mod+Ctrl+Q hotkey-overlay-title="Calculator" { spawn "qalculate-gtk"; }
+    Mod+Alt+Comma hotkey-overlay-title="Dismiss last notification" { spawn "makoctl" "dismiss"; }
+    Mod+Alt+Period hotkey-overlay-title="Dismiss all notifications" { spawn "makoctl" "dismiss" "--all"; }
+    Mod+Alt+Space hotkey-overlay-title="Toggle top bar" { spawn-sh "pkill -USR1 waybar || systemctl --user start waybar.service"; }
+    Mod+Alt+K hotkey-overlay-title="Show key bindings" { spawn "kitty" "@@SCRIPTS@@/keybinds.sh"; }
+    Mod+Ctrl+Space hotkey-overlay-title="Wallpaper picker" { spawn "@@SCRIPTS@@/wallpaper-tofi.sh"; }
+    Mod+Ctrl+Delete hotkey-overlay-title="Close all windows" { spawn "@@SCRIPTS@@/close-all.sh"; }
+    Mod+Backspace hotkey-overlay-title="Toggle window transparency" { toggle-window-rule-opacity; }
+    Mod+Ctrl+I hotkey-overlay-title="Toggle locking on idle" { spawn-sh "sh -c 'if systemctl --user is-active --quiet swayidle.service; then systemctl --user stop swayidle.service && notify-send \"Idle lock\" \"Off\"; else systemctl --user start swayidle.service && notify-send \"Idle lock\" \"On\"; fi'"; }
+    Mod+Ctrl+N hotkey-overlay-title="Toggle nightlight" { spawn-sh "sh -c 'if pkill -x gammastep; then notify-send \"Nightlight\" \"Off\"; else gammastep -O 3500 >/dev/null 2>&1 & notify-send \"Nightlight\" \"On\"; fi'"; }

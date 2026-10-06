@@ -20,10 +20,13 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      nix.gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 7d";
+      # Declarative replacement for the former `nix profile install nh`.
+      # nh clean owns garbage collection (nixpkgs warns if nix.gc is
+      # also enabled, so nix.gc stays off).
+      programs.nh = {
+        enable = true;
+        flake = "/home/blackmage/.config/nixpkgs";
+        clean.enable = true;
       };
 
       environment.systemPackages = with pkgs; [ wget ];

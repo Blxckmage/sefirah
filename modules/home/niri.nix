@@ -4,7 +4,7 @@
     ({ config, lib, pkgs, ... }:
     let
       # Guard for Niri-only idle commands: swayidle runs on both compositors
-      # (same graphical-session.target), so lock commands must no-op on Hyprland
+      # (same graphical-session.target), so lock/DPMS commands must no-op on Hyprland
       # where hypridle already owns locking. `niri msg` fails without a Niri
       # socket, making this a reliable runtime probe (no env guessing).
       niri-only = pkgs.writeShellScriptBin "niri-only" ''
@@ -12,6 +12,91 @@
           exec "$@"
         fi
       '';
+
+      tc = config.lib.stylix.colors;
+      hx = hex: lib.toLower (lib.removePrefix "#" hex);
+      homeDir = config.home.homeDirectory;
+      scriptsDir = "${homeDir}/.config/hypr/scripts";
+      # Cursor follows the Stylix-driven pointer theme (see nixos/stylix.nix);
+      # single override point if Niri should ever diverge from it.
+      cursorTheme = config.home.pointerCursor.name;
+      cursorSize = toString config.home.pointerCursor.size;
+
+      # @@PLACEHOLDER@@ substitution with an assertion so a renamed
+      # anchor fails the build instead of shipping a literal "@@...@@".
+      subst = placeholders: prev:
+        let
+          from = builtins.attrNames placeholders;
+          to = builtins.attrValues placeholders;
+          next = lib.replaceStrings from to prev;
+        in
+        assert lib.assertMsg (!lib.any (ph: lib.hasInfix ph next) from)
+          "niri placeholder missing: ${next}";
+        next;
+
+      themePlaceholders = {
+        "@@BASE00@@" = hx tc.base00;
+        "@@BASE02@@" = hx tc.base02;
+        "@@BASE08@@" = hx tc.base08;
+        "@@BASE0B@@" = hx tc.base0B;
+        "@@BASE0D@@" = hx tc.base0D;
+      };
+
+      pathPlaceholders = {
+        "@@HOME@@" = homeDir;
+        "@@SCRIPTS@@" = scriptsDir;
+        "@@CURSOR_SIZE@@" = cursorSize;
+        "@@CURSOR_THEME@@" = cursorTheme;
+      };
+
+      # Modular config, mirroring files/hypr/*.lua + bindings/*.lua.
+      # Fragments were derived from the niri upstream default config
+      # (version follows pkgs.niri); on update, diff the new default
+      # against files/niri/* before rebuilding.
+      # each fragment is a complete top-level node, except binds/* which
+      # are lines concatenated inside a single `binds {}` (Niri forbids
+      # a second binds block — a parse error).
+      input = builtins.readFile ./files/niri/input.kdl;
+      output = builtins.readFile ./files/niri/output.kdl;
+      layout = subst themePlaceholders (builtins.readFile ./files/niri/layout.kdl);
+      windows = builtins.readFile ./files/niri/windows.kdl;
+      cursor = subst pathPlaceholders (builtins.readFile ./files/niri/cursor.kdl);
+      autostart = subst pathPlaceholders (builtins.readFile ./files/niri/autostart.kdl);
+      env = subst pathPlaceholders (builtins.readFile ./files/niri/env.kdl);
+      misc = builtins.readFile ./files/niri/misc.kdl;
+      overview = subst themePlaceholders (builtins.readFile ./files/niri/overview.kdl);
+      bindsApps = builtins.readFile ./files/niri/binds/apps.kdl;
+      bindsTiling = builtins.readFile ./files/niri/binds/tiling.kdl;
+      bindsMedia = builtins.readFile ./files/niri/binds/media.kdl;
+      bindsUtilities = subst pathPlaceholders (builtins.readFile ./files/niri/binds/utilities.kdl);
+      bindsSystem = builtins.readFile ./files/niri/binds/system.kdl;
+
+      binds = ''
+        binds {
+            Mod+Shift+Slash { show-hotkey-overlay; }
+
+        ${bindsApps}
+        ${bindsMedia}
+        ${bindsTiling}
+        ${bindsUtilities}
+        ${bindsSystem}
+        }
+      '';
+
+      fullConfig = lib.concatStringsSep "\n" [
+        ''// sefirah: modular niri config — see files/niri/*.kdl + binds/*.kdl.''
+        ''// Validated at build time (`niri validate` via wayland.windowManager.niri).''
+        input
+        output
+        layout
+        windows
+        cursor
+        autostart
+        env
+        misc
+        overview
+        binds
+      ];
     in
     {
       home.packages = with pkgs; [
@@ -29,77 +114,29 @@
         # Same package programs.niri installs: no version drift, and it turns
         # on build-time `niri validate` for the generated config below.
         package = pkgs.niri;
-        # UWSM owns the session (niri-uwsm SDDM entry); do not also install
-        # niri-session units from Home Manager.
+        # UWSM owns the session (niri-uwsm session entry via programs.uwsm);
+        # do not also install niri-session units from Home Manager.
         systemd.enable = false;
         # Portals are owned by programs.niri on the system side.
         portalPackage = null;
-        # Baseline = upstream default config, vendored verbatim in
-        # files/niri/default-config.kdl (minus its `spawn-at-startup "waybar"`.
-        # which would duplicate the systemd bar service). Included first ...
         enableDefaultConfig = false;
-        extraConfigEarly =
-          let
-            tc = config.lib.stylix.colors.withHashtag;
-            hx = hex: lib.toLower (lib.removePrefix "#" hex);
-            patch = from: to: prev:
-              let next = lib.replaceStrings [ from ] [ to ] prev;
-              in assert lib.assertMsg (next != prev) "niri theme anchor missing";
-              next;
-            # Mirrors hypr/theme/colors.lua: active base0D->base0B @45deg.
-            ag = "active-gradient from=\"#" + hx tc.base0D + "\" to=\"#"
-              + hx tc.base0B + "\" angle=45";
-            src = builtins.readFile ./files/niri/default-config.kdl;
-          in
-          patch "    gaps 16"
-            "    // sefirah: Hyprland gaps_in 5.\n    gaps 5"
-          (patch "        // left 64\n        // right 64\n        // top 64\n        // bottom 64"
-            "        // sefirah: Hyprland gaps_out 10 as outer gaps.\n        left 10\n        right 10\n        top 10\n        bottom 10"
-          (patch "        // Uncomment this line to disable the focus ring.\n        // off"
-            "        // sefirah: single-frame Hyprland look, ring off.\n        off"
-          (patch "        off\n\n        width 4\n        active-color \"#ffc87f\"\n        inactive-color \"#505050\""
-            ("        // sefirah: Hyprland border_size 2, Stylix gradient.\n        on\n\n        width 2\n        " + ag + "\n        inactive-color \"#" + hx tc.base02 + "aa\"")
-          (patch "        urgent-color \"#9b0000\""
-            "        urgent-color \"#${hx tc.base08}\""
-            src))));
-        settings = { };
-        # ... then only session essentials appended after it. Binds merge
-        # per-key with the defaults, so Mod+Return/Mod+D below only add to
-        # (or override) those keys. Full bind/layout migration comes later.
         # NOTE: no waybar spawn here — the waybar user service (services.nix)
         # is the single bar launcher on both compositors.
-        extraConfig = ''
-          // --- sefirah Niri baseline (Hyprland config untouched) ---
-
-          // Session essentials (mirrors hypr/autostart.lua).
-          spawn-at-startup "swaybg" "-i" "/home/blackmage/Pictures/wallpaper.jpg" "-m" "fill"
-          spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
-          spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
-
-          // Cursor / toolkit env (mirrors hypr/envs.lua).
-          environment {
-              XCURSOR_THEME "Bibata-Modern-Classic"
-              XCURSOR_SIZE "16"
-              HYPRCURSOR_SIZE "16"
-              GDK_SCALE "1"
-              QT_QPA_PLATFORMTHEME "kvantum"
-              QT_STYLE_OVERRIDE "kvantum"
-              QT_PLUGIN_PATH "/etc/profiles/per-user/blackmage/lib/qt-6/plugins:/etc/profiles/per-user/blackmage/lib/qt-5.15.19/plugins"
-          }
-
-          // (Launch binds live in the vendored binds block above: Mod+Return
-          // kitty, Mod+D tofi-drun. A second binds {} node is a parse error.)
-
-          // sefirah: Stylix backdrop (no overview section upstream to clash with).
-          overview {
-              backdrop-color "${config.lib.stylix.colors.withHashtag.base00}"
-          }
-        '';
+        extraConfigEarly = fullConfig;
+        settings = { };
       };
 
+      # Niri-scoped session env. UWSM sources uwsm/env-niri (XDG_CURRENT_DESKTOP=niri).
+      # Niri itself reads its cursor size from the launch environment — the
+      # `environment {}` block in config.kdl only feeds spawned clients.
+      xdg.configFile."uwsm/env-niri".text = ''
+        export XCURSOR_SIZE="${cursorSize}"
+        export XCURSOR_THEME="${cursorTheme}"
+      '';
+
       # Idle baseline mirroring hypridle (300s lock / 330s DPMS off).
-      # Runs on both compositors but every command is Niri-safe: lock commands
-      # are guarded by niri-only, and `niri msg` fails harmlessly on Hyprland.
+      # Every command is Niri-guarded so the shared swayidle unit is a
+      # harmless no-op on Hyprland (where hypridle owns idle).
       services.swayidle = {
         enable = true;
         events = {
@@ -112,8 +149,8 @@
           }
           {
             timeout = 330;
-            command = "${pkgs.niri}/bin/niri msg action power-off-monitors";
-            resumeCommand = "${pkgs.niri}/bin/niri msg action power-on-monitors";
+            command = "${niri-only}/bin/niri-only ${pkgs.niri}/bin/niri msg action power-off-monitors";
+            resumeCommand = "${niri-only}/bin/niri-only ${pkgs.niri}/bin/niri msg action power-on-monitors";
           }
         ];
       };

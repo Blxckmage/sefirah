@@ -11,6 +11,10 @@
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    luvus.url = "github:RizRiyz/luvus";
+    luvus.inputs.nixpkgs.follows = "nixpkgs";
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
+    nixCats.url = "github:BirdeeHub/nixCats-nvim";
     spotifast.url = "github:crmne/spotifast";
     spotifast.inputs.nixpkgs.follows = "nixpkgs";
   };

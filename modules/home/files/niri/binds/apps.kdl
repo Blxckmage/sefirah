@@ -1,0 +1,7 @@
+    Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+    Mod+D hotkey-overlay-title="Run an Application: tofi" { spawn "tofi-drun" "--drun-launch=true"; }
+    Mod+Shift+W hotkey-overlay-title="Browser" { spawn "brave"; }
+    Mod+Tab { focus-workspace-down; }
+    Mod+Shift+Tab { focus-workspace-up; }
+    Mod+Shift+E hotkey-overlay-title="File manager" { spawn "nautilus"; }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }

@@ -1,0 +1,29 @@
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            options "compose:caps,shift:both_capslock_cancel"
+
+        }
+
+        numlock
+
+        repeat-rate 40
+        repeat-delay 250
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        click-method "clickfinger"
+        scroll-factor 0.4
+    }
+
+    mouse {
+    }
+
+    trackpoint {
+    }
+
+    focus-follows-mouse max-scroll-amount="0%"
+}

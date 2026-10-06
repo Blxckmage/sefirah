@@ -1,0 +1,22 @@
+    XF86AudioRaiseVolume allow-when-locked=true hotkey-overlay-title="Volume up" { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true hotkey-overlay-title="Volume down" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute allow-when-locked=true hotkey-overlay-title="Mute" { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute allow-when-locked=true hotkey-overlay-title="Mute microphone" { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    Alt+XF86AudioRaiseVolume allow-when-locked=true hotkey-overlay-title="Volume up precise" { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "1%+"; }
+    Alt+XF86AudioLowerVolume allow-when-locked=true hotkey-overlay-title="Volume down precise" { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "1%-"; }
+
+    XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="Brightness up" { spawn "brightnessctl" "-e4" "-n2" "set" "5%+"; }
+    XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="Brightness down" { spawn "brightnessctl" "-e4" "-n2" "set" "5%-"; }
+    Shift+XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="Brightness maximum" { spawn "brightnessctl" "-e4" "-n2" "set" "100%"; }
+    Shift+XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="Brightness minimum" { spawn "brightnessctl" "-e4" "-n2" "set" "1%"; }
+    Alt+XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="Brightness up precise" { spawn "brightnessctl" "-e4" "-n2" "set" "+1%"; }
+    Alt+XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="Brightness down precise" { spawn "brightnessctl" "-e4" "-n2" "set" "1%-"; }
+
+    XF86KbdBrightnessUp allow-when-locked=true hotkey-overlay-title="Keyboard brightness up" { spawn "brightnessctl" "--device=*kbd*" "set" "+10%"; }
+    XF86KbdBrightnessDown allow-when-locked=true hotkey-overlay-title="Keyboard brightness down" { spawn "brightnessctl" "--device=*kbd*" "set" "10%-"; }
+
+    XF86AudioNext allow-when-locked=true hotkey-overlay-title="Next track" { spawn "playerctl" "next"; }
+    XF86AudioPause allow-when-locked=true hotkey-overlay-title="Play/Pause" { spawn "playerctl" "play-pause"; }
+    XF86AudioPlay allow-when-locked=true hotkey-overlay-title="Play/Pause" { spawn "playerctl" "play-pause"; }
+    XF86AudioPrev allow-when-locked=true hotkey-overlay-title="Previous track" { spawn "playerctl" "previous"; }
+    XF86Eject allow-when-locked=true hotkey-overlay-title="Eject media" { spawn "eject"; }

@@ -1,0 +1,4 @@
+cursor {
+    xcursor-theme "@@CURSOR_THEME@@"
+    xcursor-size @@CURSOR_SIZE@@
+}
