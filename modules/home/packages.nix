@@ -34,16 +34,12 @@
         grim
         slurp
         satty
-        hyprlock
         cliphist
         nautilus
         sushi
         tela-icon-theme
         waybar
-        hyprpaper
         mako
-        hypridle
-        hyprsunset
         qalculate-gtk
         lazygit
         gh

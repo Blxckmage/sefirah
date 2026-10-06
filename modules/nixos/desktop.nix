@@ -14,7 +14,7 @@
       # SDDM removed: greeter had no working cursor (weston) and no fix
       # stuck. greetd + tuigreet is keyboard-driven: no mouse needed, ever.
       services.displayManager.sddm.enable = false;
-      services.displayManager.defaultSession = "hyprland-uwsm";
+      services.displayManager.defaultSession = "niri-uwsm";
 
       services.greetd = {
         enable = true;
@@ -26,14 +26,6 @@
           + "--xsessions ${config.services.displayManager.sessionData.desktops}/share/xsessions "
           + "--user-menu --asterisks --power-shutdown 'systemctl poweroff' --power-reboot 'systemctl reboot'";
       };
-
-      programs.hyprland = {
-        enable = true;
-        xwayland.enable = true;
-        withUWSM = true;
-      };
-
-      security.pam.services.hyprlock = { };
 
       xdg.portal = {
         enable = true;

@@ -78,7 +78,7 @@
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
-    "on-click": "/home/blackmage/.config/hypr/scripts/power-profile-tofi.sh",
+    "on-click": "/home/blackmage/.config/niri/scripts/power-profile-tofi.sh",
     "states": {
       "warning": 20,
       "critical": 10
@@ -119,7 +119,7 @@
   },
   "custom/power": {
     "format": "⏻",
-    "on-click": "/home/blackmage/.config/hypr/scripts/power-tofi.sh",
+    "on-click": "/home/blackmage/.config/niri/scripts/power-tofi.sh",
     "tooltip-format": "Power menu\n\nSuper + Escape"
   },
   "tray": {

@@ -3,9 +3,7 @@
   config.sefirah.homeModules = [
     ({ config, lib, pkgs, ... }:
     let
-      # Guard for Niri-only idle commands: swayidle runs on both compositors
-      # (same graphical-session.target), so lock/DPMS commands must no-op on Hyprland
-      # where hypridle already owns locking. `niri msg` fails without a Niri
+      # Guard for Niri-only idle commands: `niri msg` fails without a Niri
       # socket, making this a reliable runtime probe (no env guessing).
       niri-only = pkgs.writeShellScriptBin "niri-only" ''
         if ${pkgs.niri}/bin/niri msg outputs >/dev/null 2>&1; then
@@ -16,7 +14,7 @@
       tc = config.lib.stylix.colors;
       hx = hex: lib.toLower (lib.removePrefix "#" hex);
       homeDir = config.home.homeDirectory;
-      scriptsDir = "${homeDir}/.config/hypr/scripts";
+      scriptsDir = "${homeDir}/.config/niri/scripts";
       # Cursor follows the Stylix-driven pointer theme (see nixos/stylix.nix);
       # single override point if Niri should ever diverge from it.
       cursorTheme = config.home.pointerCursor.name;
@@ -49,7 +47,7 @@
         "@@CURSOR_THEME@@" = cursorTheme;
       };
 
-      # Modular config, mirroring files/hypr/*.lua + bindings/*.lua.
+      # Modular config, one fragment per concern (see files/niri/*.kdl).
       # Fragments were derived from the niri upstream default config
       # (version follows pkgs.niri); on update, diff the new default
       # against files/niri/* before rebuilding.
@@ -104,7 +102,7 @@
         swaylock
         swayidle
         swaybg
-        gammastep # nightlight on Niri (hyprsunset needs Hyprland IPC)
+        gammastep # nightlight on Niri
         # xwayland-satellite arrives via wayland.windowManager.niri below
         # (default), so XWayland apps like Steam keep working on Niri.
       ];
@@ -126,6 +124,14 @@
         settings = { };
       };
 
+      # Helper scripts spawned from binds (power menu, keybind cheatsheet,
+      # wallpaper picker, close-all) and the Waybar power/battery modules.
+      xdg.configFile."niri/scripts" = {
+        source = ./files/niri/scripts;
+        recursive = true;
+        executable = true;
+      };
+
       # Niri-scoped session env. UWSM sources uwsm/env-niri (XDG_CURRENT_DESKTOP=niri).
       # Niri itself reads its cursor size from the launch environment — the
       # `environment {}` block in config.kdl only feeds spawned clients.
@@ -134,9 +140,7 @@
         export XCURSOR_THEME="${cursorTheme}"
       '';
 
-      # Idle baseline mirroring hypridle (300s lock / 330s DPMS off).
-      # Every command is Niri-guarded so the shared swayidle unit is a
-      # harmless no-op on Hyprland (where hypridle owns idle).
+      # Idle baseline: 300s lock / 330s DPMS off.
       services.swayidle = {
         enable = true;
         events = {

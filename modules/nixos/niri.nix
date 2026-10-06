@@ -2,12 +2,11 @@
 {
   config.sefirah.nixosModules = [
     ({ pkgs, ... }: {
-      # Scrollable-tiling compositor alongside Hyprland (which stays the
-      # default session in desktop.nix). Enabling this adds the "Niri" and
-      # "Niri (UWSM)" session entries, xdg-desktop-portal-gnome + gnome-keyring
-      # and the portal config Niri expects (gnome + gtk). Pick "Niri (UWSM)"
-      # at greetd/tuigreet to get the UWSM-managed session below,
-      # consistent with hyprland-uwsm.
+      # Niri is the only compositor (and the default login session):
+      # this enables the "Niri" and "Niri (UWSM)" session entries,
+      # xdg-desktop-portal-gnome + gnome-keyring and the portal config
+      # Niri expects (gnome + gtk). Pick "Niri (UWSM)" at greetd/tuigreet
+      # to get the UWSM-managed session below.
       programs.niri = {
         enable = true;
       };
