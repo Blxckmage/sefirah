@@ -4,8 +4,7 @@
     {
       programs.starship = {
         enable = true;
-        enableBashIntegration = false;
-        enableZshIntegration = false;
+        enableZshIntegration = true;
         settings = {
           format = "$character$directory$git_branch$git_status";
           add_newline = false;

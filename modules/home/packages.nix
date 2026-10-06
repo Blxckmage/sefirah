@@ -3,10 +3,7 @@
   config.sefirah.homeModules = [
     ({ pkgs, ... }: {
       home.packages = with pkgs; [
-        neovim
-        vim
         impala
-        tmux
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
         (brave.override {
           commandLineArgs = "--force-device-scale-factor=1";
@@ -25,11 +22,6 @@
         python3
         nodejs
         bun
-        starship
-        fzf
-        eza
-        zoxide
-        atuin
         mise
         bat
         fd
@@ -53,8 +45,6 @@
         hypridle
         hyprsunset
         qalculate-gtk
-        yazi
-        zellij
         lazygit
         gh
         httpie
@@ -73,10 +63,8 @@
         sops
         cachix
         mcp-nixos
-        zsh-fzf-tab
-        zsh-you-should-use
-        zsh-autosuggestions
-        zsh-fast-syntax-highlighting
+        walker
+        lazydocker
         heroic
         (writeShellScriptBin "with-gamescope" ''
           exec gamescope -f -W 1920 -H 1080 -- "$@"

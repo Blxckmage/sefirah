@@ -10,11 +10,8 @@
           disable_ligatures = "always";
           symbol_map = "U+E000-U+F8FF Nerd Font Symbols";
           window_padding_width = 14;
-          window_padding_height = 14;
           hide_window_decorations = "yes";
-          show_window_resize_notification = "no";
           confirm_os_window_close = "0";
-          single_instance = "yes";
           allow_remote_control = "no";
           cursor_shape = "block";
           enable_audio_bell = "no";
