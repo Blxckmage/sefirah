@@ -11,6 +11,8 @@
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    omp.url = "github:can1357/oh-my-pi";
+    omp.inputs.nixpkgs.follows = "nixpkgs";
     luvus.url = "github:RizRiyz/luvus";
     luvus.inputs.nixpkgs.follows = "nixpkgs";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
