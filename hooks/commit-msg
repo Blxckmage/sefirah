@@ -1,0 +1,50 @@
+#!/bin/sh
+# sefirah commit-msg hook — enforces area scopes, bans redundant (nixpkgs).
+# Installed via: git config core.hooksPath hooks
+# Convention: type(area): short imperative description (<=72 chars)
+#   type = feat | fix | revert | refactor | chore | docs
+#   area = owning module, e.g. niri, waybar, shell, stylix, nixcats, hosts, flake
+#   scopeless (feat: ...) allowed but area preferred; (nixpkgs) rejected.
+
+MSG_FILE="$1"
+SUBJECT="$(sed -n '1p' "$MSG_FILE")"
+
+# Let git-generated messages through.
+case "$SUBJECT" in
+  "Merge "*|"Revert \""*|"Revert '"*) exit 0 ;;
+esac
+
+TYPES="feat|fix|revert|refactor|chore|docs"
+
+# Must match type[(scope)]: description
+if ! printf '%s' "$SUBJECT" | grep -Eq "^($TYPES)(\([a-z0-9/_-]+\))?: .+"; then
+  cat >&2 <<'EOF'
+commit-msg rejected — use: type(area): description
+  types: feat|fix|revert|refactor|chore|docs
+  areas: niri|waybar|tofi|mako|gtk|kitty|foot|btop|shell|tmux|zellij|starship|omp|luvus|yazi|packages|services|desktop|stylix|audio|networking|boot|power|steam|gaming|flatpak|printing|firewall|nixcats|hosts|flake|overlays|theme|base
+  examples:
+    feat(niri): phase 4 core tiling binds
+    fix(waybar): no workspace tooltip on empty
+    feat(nixcats): replace files-nvim with nixCats
+EOF
+  exit 1
+fi
+
+# Ban the redundant repo-name scope.
+SCOPE="$(printf '%s' "$SUBJECT" | sed -n 's/^[a-z]*(\([^)]*\)).*/\1/p')"
+if [ "$(printf '%s' "$SCOPE" | tr '[:upper:]' '[:lower:]')" = "nixpkgs" ]; then
+  cat >&2 <<EOF
+commit-msg rejected — (nixpkgs) repeats the repo name, use the changed area instead.
+  got:    $SUBJECT
+  better: feat(niri): <what changed>   # pick owning module
+  areas:  niri|waybar|shell|stylix|nixcats|hosts|flake|... (see hooks/commit-msg)
+EOF
+  exit 1
+fi
+
+# Length advisory only (don't block).
+if [ "${#SUBJECT}" -gt 72 ]; then
+  echo "commit-msg warning: subject is ${#SUBJECT} chars (>72), consider shortening." >&2
+fi
+
+exit 0
