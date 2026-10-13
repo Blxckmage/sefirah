@@ -1,9 +1,8 @@
 { ... }:
 {
-  # Ports ~/.config/tmux/tmux.conf (unmanaged) to programs.tmux.
-  # - sessionx comes from nixpkgs; tmux-menus (jaclu) is not packaged, so it
-  #   is built with mkTmuxPlugin pinned to v2.4.1. tpm itself goes away.
-  # - HM manages the XDG path, so reload targets it explicitly.
+  # tmux-menus (jaclu) is not in nixpkgs, so it is built with
+  # mkTmuxPlugin pinned to v2.4.1.
+  # HM manages the XDG path, so reload targets it explicitly.
   config.sefirah.homeModules = [
     ({ pkgs, ... }: {
       programs.tmux = {
@@ -32,7 +31,6 @@
           unbind C-b
           bind C-a send-prefix
 
-          # Reload config
           bind C-r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded"
 
           setw -g pane-base-index 1
@@ -45,11 +43,9 @@
           setw -g aggressive-resize on
           set -g detach-on-destroy off
 
-          # Copy mode
           bind -T copy-mode-vi v send -X begin-selection
           bind -T copy-mode-vi y send -X copy-selection-and-cancel
 
-          # Splits in current path
           bind | split-window -h -c "#{pane_current_path}"
           bind - split-window -v -c "#{pane_current_path}"
           unbind '"'
@@ -70,14 +66,12 @@
           bind P switch-client -p
           bind N switch-client -n
 
-          # Appearance
           set -g status-position top
           set -g status-interval 5
           set -g status-left-length 30
           set -g status-right-length 50
           set -g window-status-separator ""
           set -gw automatic-rename on
-          # set -gw automatic-rename-format '#{b:pane_current_path}'
 
           set -g status-style "bg=default,fg=brightwhite"
           set -g status-left "#[fg=black,bg=white,bold] #S #[bg=default] "

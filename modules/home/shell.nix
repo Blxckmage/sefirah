@@ -1,10 +1,5 @@
 { ... }:
 {
-  # HM-ified shell stack. Ports modules/home/files/zsh/* (retired) to native
-  # Home Manager modules: tool inits (starship/zoxide/fzf/atuin) come from
-  # their programs.* modules instead of hand-rolled eval lines, and the four
-  # zsh plugins resolve from the nix store instead of profile probing with a
-  # git-clone fallback (which is also why fzf-tab actually loads now).
   config.sefirah.homeModules = [
     ({ pkgs, ... }: {
       programs.zsh = {
@@ -65,11 +60,9 @@
           }
         ];
         initContent = ''
-          # Extra shell behavior (HM covers history file/size/sharing above).
           setopt inc_append_history autocd no_beep interactivecomments
           unsetopt nomatch
 
-          # ~/.local/bin first if present.
           if [ -d "$HOME/.local/bin" ]; then
             export PATH="$HOME/.local/bin:$PATH"
           fi
@@ -79,8 +72,6 @@
             case ":$PATH:" in *":$d:"*) ;; *) [ -d "$d" ] && export PATH="$PATH:$d" ;; esac
           done
 
-          # Tool install prefixes (bins are empty today; PATH entries get
-          # added back if anything is ever installed under them).
           export BUN_INSTALL="$HOME/.bun"
           export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 
@@ -93,7 +84,6 @@
           zstyle ':completion:*' menu select
           bindkey -e
 
-          # Readline-style bindings (from files/zsh/inputrc).
           bindkey "^[[A" history-beginning-search-backward
           bindkey "^[[B" history-beginning-search-forward
           bindkey '\e[C' forward-char
@@ -102,15 +92,10 @@
           zle -N edit-command-line
           bindkey "^X^E" edit-command-line
 
-          # Technicolor dreams.
           force_color_prompt=yes
           color_prompt=yes
           autoload -Uz add-zsh-hook
 
-          # gpg pinentry-curses needs the calling TTY; programs.gpg already
-          # exports GPG_TTY=$TTY below, so no hand-rolled line here.
-
-          # mise lazy activation (mise itself comes from home.packages).
           if command -v mise &> /dev/null; then
             mise() {
               unfunction mise
@@ -122,7 +107,6 @@
           # cargo (guarded — missing until rustup/cargo provides ~/.cargo/env).
           [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-          # zoxide-backed cd: dirs pass through, anything else goes to z.
           if command -v zoxide &> /dev/null; then
             alias cd="zd"
             zd() {
@@ -142,7 +126,6 @@
             }
           fi
 
-          # Yazi change directory.
           function y() {
             local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
             yazi "$@" --cwd-file="$tmp"
@@ -151,7 +134,6 @@
             rm -f -- "$tmp"
           }
 
-          # File manager in current directory.
           function n() {
             local dir="''${1:-$PWD}"
             if command -v thunar &>/dev/null; then
@@ -161,35 +143,34 @@
             fi
           }
 
-          # Copy dir path / file path.
           cfp() {
             readlink -f "$1" | wl-copy
           }
 
-          # Open files with xdg-open in the background.
           open() (
             xdg-open "$@" >/dev/null 2>&1 &
           )
         '';
       };
 
-      # Replaces the hand-rolled `eval "$(atuin init zsh)"` + ^R bind.
-      # Existing ~/.config/atuin/config.toml is template defaults, so the
-      # generated config is equivalent (hm-bak backup still applies).
-      programs.atuin.enable = true;
+      # Up-arrow stays native history (history-beginning-search-backward
+      # bound below); Atuin opens on Ctrl-R only, in both bash and zsh.
+      programs.atuin = {
+        enable = true;
+        flags = [ "--disable-up-arrow" ];
+      };
 
       # Provides `z` for the zd wrapper above.
       programs.zoxide.enable = true;
 
-      # Replaces the manual `fzf --zsh` eval + Arch fallback paths.
-      # Atuin keeps Ctrl-R (as before, where it was sourced last).
+      # fzf keeps its default Tab-completion binds; history search on
+      # Ctrl-R stays with Atuin (see programs.atuin.flags above).
       programs.fzf = {
         enable = true;
         historyWidget.bash.command = "";
         historyWidget.zsh.command = "";
       };
 
-      # Binary via module, aliases stay hand-rolled (exact eza flags kept).
       programs.eza = {
         enable = true;
         enableZshIntegration = false;

@@ -10,7 +10,6 @@
 
       home.packages = [ pkgs._9router ];
 
-      # Local 9Router gateway as an omp custom provider.
       # apiKey resolves as env var NINEROUTER_KEY first, literal otherwise —
       # so `export NINEROUTER_KEY="sk-..."` (dashboard key) wins and no
       # secret lands in the Nix store. Keyless local installs accept anything.
@@ -23,7 +22,6 @@
             apiKey: NINEROUTER_KEY
       '';
 
-      # Keep the router running on the default port without browser popups.
       # --skip-update: Nix store is immutable, updates come via rebuilds.
       systemd.user.services."9router" = {
         Unit = {
