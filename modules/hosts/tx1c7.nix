@@ -10,14 +10,11 @@ in
     nixosModules = config.sefirah.nixosModules ++ [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-7th-gen
       ../../hardware-configuration.nix
-      # ThinkPad X1 7th gen (16 GB, iGPU-only) memory tuning for gaming.
       # Kept host-specific: other machines get their own sizing.
-      # Mirrors Omarchy (zram-generator 90-omarchy.conf + 99-omarchy-sysctl.conf):
-      # full-RAM zstd zram at priority 100 in front of the disk swap partition.
       {
         zramSwap = {
           enable = true;
-          memoryPercent = 100; # 16G of 16G, like Omarchy/CachyOS zram-size = ram
+          memoryPercent = 100;
           algorithm = "zstd";
           priority = 100;
         };
@@ -39,7 +36,6 @@ in
           "kernel.nmi_watchdog" = 0;
         };
       }
-      # ThinkPad thermal + power + scheduler tuning (Omarchy/CachyOS-inspired).
       ({ pkgs, ... }: {
         # No thermald: it refuses this platform on purpose
         # ("dytc_lapmode present: Thermald can't run on this platform") —
@@ -47,9 +43,7 @@ in
         # either: Whiskey Lake has no hybrid P/E cores.
 
         # Kyber I/O scheduler: 2ms read-latency target keeps interactive
-        # reads flowing under write floods (Omarchy's 60-omarchy-io-scheduler).
-        # Auto-switch power profile on AC plug/unplug (Omarchy's
-        # omarchy-powerprofiles-set): performance on AC, balanced on battery.
+        # reads flowing under write floods.
         services.udev.extraRules = ''
           ACTION=="add|change", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="nvme*|sd*|mmcblk*|vd*", ATTR{queue/scheduler}="kyber"
           SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"

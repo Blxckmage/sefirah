@@ -47,7 +47,6 @@
         "@@CURSOR_THEME@@" = cursorTheme;
       };
 
-      # Modular config, one fragment per concern (see files/niri/*.kdl).
       # Fragments were derived from the niri upstream default config
       # (version follows pkgs.niri); on update, diff the new default
       # against files/niri/* before rebuilding.
@@ -82,7 +81,6 @@
       '';
 
       fullConfig = lib.concatStringsSep "\n" [
-        ''// sefirah: modular niri config — see files/niri/*.kdl + binds/*.kdl.''
         ''// Validated at build time (`niri validate` via wayland.windowManager.niri).''
         input
         output
@@ -102,7 +100,7 @@
         swaylock
         swayidle
         swaybg
-        gammastep # nightlight on Niri
+        gammastep
         # xwayland-satellite arrives via wayland.windowManager.niri below
         # (default), so XWayland apps like Steam keep working on Niri.
       ];
@@ -124,8 +122,6 @@
         settings = { };
       };
 
-      # Helper scripts spawned from binds (power menu, keybind cheatsheet,
-      # wallpaper picker, close-all) and the Waybar power/battery modules.
       xdg.configFile."niri/scripts" = {
         source = ./files/niri/scripts;
         recursive = true;
@@ -140,7 +136,6 @@
         export XCURSOR_THEME="${cursorTheme}"
       '';
 
-      # Idle baseline: 300s lock / 330s DPMS off.
       services.swayidle = {
         enable = true;
         events = {

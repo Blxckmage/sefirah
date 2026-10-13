@@ -1,15 +1,17 @@
-    Mod+O repeat=false { toggle-overview; }
+    Mod+O repeat=false hotkey-overlay-title="Toggle overview" { toggle-overview; }
 
     Mod+Q repeat=false { close-window; }
     Mod+Shift+Q hotkey-overlay-title="Close window" { close-window; }
 
+    // Focus nav — same binds drive the overview (Super+O), where J/K
+    // glide through windows AND workspaces via the -or-workspace variants.
     Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-down; }
-    Mod+Up    { focus-window-up; }
+    Mod+Down  { focus-window-or-workspace-down; }
+    Mod+Up    { focus-window-or-workspace-up; }
     Mod+Right { focus-column-right; }
     Mod+H     { focus-column-left; }
-    Mod+J     { focus-window-down; }
-    Mod+K     { focus-window-up; }
+    Mod+J     { focus-window-or-workspace-down; }
+    Mod+K     { focus-window-or-workspace-up; }
     Mod+L     { focus-column-right; }
 
     Mod+Ctrl+Left  { move-column-left; }

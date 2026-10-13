@@ -20,7 +20,6 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      # Declarative replacement for the former `nix profile install nh`.
       # nh clean owns garbage collection (nixpkgs warns if nix.gc is
       # also enabled, so nix.gc stays off).
       programs.nh = {

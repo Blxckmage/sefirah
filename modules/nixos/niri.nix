@@ -2,11 +2,7 @@
 {
   config.sefirah.nixosModules = [
     ({ pkgs, ... }: {
-      # Niri is the only compositor (and the default login session):
-      # this enables the "Niri" and "Niri (UWSM)" session entries,
-      # xdg-desktop-portal-gnome + gnome-keyring and the portal config
-      # Niri expects (gnome + gtk). Pick "Niri (UWSM)" at greetd/tuigreet
-      # to get the UWSM-managed session below.
+      # Session entries + portals; pick "Niri (UWSM)" at the login screen.
       programs.niri = {
         enable = true;
       };
