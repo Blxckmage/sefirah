@@ -5,6 +5,7 @@
       home.packages = with pkgs; [
         impala
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
+        claude-code
         (brave.override {
           commandLineArgs = "--force-device-scale-factor=1";
         })
