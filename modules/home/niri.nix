@@ -118,7 +118,7 @@
         enableDefaultConfig = false;
         # NOTE: no waybar spawn here — the waybar user service (services.nix)
         # is the single bar launcher on both compositors.
-        extraConfigEarly = fullConfig;
+        extraConfig = lib.mkBefore fullConfig;
         settings = { };
       };
 
