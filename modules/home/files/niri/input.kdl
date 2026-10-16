@@ -2,7 +2,7 @@ input {
     keyboard {
         xkb {
             layout "us"
-            options "compose:caps,shift:both_capslock_cancel"
+            options "shift:both_capslock_cancel"
 
         }
 
