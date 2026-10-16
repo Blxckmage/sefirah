@@ -37,30 +37,35 @@ in
         };
       }
       ({ pkgs, ... }: {
-        # No thermald: it refuses this platform on purpose
-        # ("dytc_lapmode present: Thermald can't run on this platform") —
-        # Lenovo's DYTC firmware owns thermal management here. No intel-lpmd
-        # either: Whiskey Lake has no hybrid P/E cores.
+        services.thermald.enable = false;
 
         # Kyber I/O scheduler: 2ms read-latency target keeps interactive
         # reads flowing under write floods.
+        # NOTE: both AC and battery stay on `balanced`. The old udev rule
+        # pinned AC to `performance` (max_perf 100% + turbo), which removed
+        # all thermal headroom on this thin chassis. Switch to
+        # `performance` manually via power-profile-tofi when needed.
         services.udev.extraRules = ''
           ACTION=="add|change", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="nvme*|sd*|mmcblk*|vd*", ATTR{queue/scheduler}="kyber"
           SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"
-          SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance"
+          SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"
         '';
         systemd.services.powerprofiles-init = {
           description = "Set power profile from AC state at boot";
+          # Runs after boot is complete instead of ordering against
+          # power-profiles-daemon.service: the old
+          # wants/after + wantedBy multi-user.target created an ordering
+          # cycle and systemd deleted this job at every boot
+          # ("Job powerprofiles-init.service/start deleted to break
+          # ordering cycle").
           wantedBy = [ "multi-user.target" ];
-          wants = [ "power-profiles-daemon.service" ];
-          after = [ "power-profiles-daemon.service" ];
+          after = [ "multi-user.target" ];
           serviceConfig.Type = "oneshot";
           script = ''
-            if [ "$(cat /sys/class/power_supply/AC/online 2>/dev/null)" = "1" ]; then
-              ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance || ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced
-            else
-              ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced
-            fi
+            for i in $(seq 1 30); do
+              ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced && break
+              sleep 1
+            done
           '';
         };
 
