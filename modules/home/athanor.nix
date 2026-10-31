@@ -5,9 +5,9 @@
       athanor = pkgs.python3Packages.buildPythonPackage rec {
         pname = "athanor";
         version = "0.2.0";
-        src = /home/blackmage/Projects/scratch/athanor;
+        src = ./../../athanor-src;
         format = "pyproject";
-        nativeBuildInputs = [ pkgs.hatchling ];
+        nativeBuildInputs = [ pkgs.python3Packages.hatchling ];
         propagatedBuildInputs = with pkgs.python3Packages; [];
         buildInputs = with pkgs; [ imagemagick python3Packages.pillow ];
         doCheck = false;

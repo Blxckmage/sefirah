@@ -1,3 +1,4 @@
+spawn-at-startup "sh" "-c" "athanor transmute umber"
 spawn-at-startup "hypridle"
 spawn-at-startup "swaybg" "-i" "@@HOME@@/Pictures/wallpaper.jpg" "-m" "fill"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
