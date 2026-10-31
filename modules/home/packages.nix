@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   config.sefirah.homeModules = [
-    ({ pkgs, ... }: {
+    ({ pkgs, lib, ... }: {
       home.packages = with pkgs; [
         impala
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
@@ -69,9 +69,6 @@
         motrix-next
         spotify
         (inputs.spotifast.packages.${pkgs.stdenv.hostPlatform.system}.spotifast.overrideAttrs {
-          # Upstream `nix build .#default` runs full `cargo test` in checkPhase;
-          # that hangs in the Nix sandbox here (>30m, blocks activate).
-          # CI already covers tests — skip them for the local install.
           doCheck = false;
         })
         thinkfan-tui
