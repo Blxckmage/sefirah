@@ -16,8 +16,8 @@
         indicator-caps-lock
         show-failed-attempts
         show-keyboard-layout
-        indicator-radius=80
-        indicator-thickness=2
+        indicator-radius=120
+        indicator-thickness=4
         inside-color=0d0b08cc
         inside-clear-color=0d0b08cc
         inside-ver-color=0d0b08cc
