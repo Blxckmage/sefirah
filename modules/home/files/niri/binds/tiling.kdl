@@ -1,6 +1,5 @@
     Mod+O repeat=false hotkey-overlay-title="Toggle overview" { toggle-overview; }
 
-    Mod+Q repeat=false { close-window; }
     Mod+Shift+Q hotkey-overlay-title="Close window" { close-window; }
 
     // Focus nav — same binds drive the overview (Super+O), where J/K
@@ -46,10 +45,6 @@
     Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
     Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
 
-    Mod+Page_Down      { focus-workspace-down; }
-    Mod+Page_Up        { focus-workspace-up; }
-    Mod+U              { focus-workspace-down; }
-    Mod+I              { focus-workspace-up; }
 // Mod+Ctrl+I is the idle-lock toggle (see utilities.kdl);
 // Mod+Ctrl+Page_Up covers this move.
 
@@ -119,7 +114,6 @@
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
 
-    Mod+V       { toggle-window-floating; }
     Mod+Shift+Space hotkey-overlay-title="Toggle floating" { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
