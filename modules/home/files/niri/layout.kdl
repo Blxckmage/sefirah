@@ -1,5 +1,5 @@
 layout {
-    gaps 5
+    gaps 6
 
     center-focused-column "never"
 
@@ -7,46 +7,26 @@ layout {
         proportion 0.33333
         proportion 0.5
         proportion 0.66667
-
     }
 
     default-column-width { proportion 0.5; }
 
     focus-ring {
         off
-
-        width 4
-
-        active-color "#7fc8ff"
-
-        inactive-color "#505050"
     }
 
     border {
         on
-
         width 2
-        active-gradient from="#@@BASE0D@@" to="#@@BASE0B@@" angle=45
+        active-color "#@@BASE09@@"
         inactive-color "#@@BASE02@@aa"
-
         urgent-color "#@@BASE08@@"
     }
 
-    shadow {
-
-        softness 30
-
-        spread 5
-
-        offset x=0 y=5
-
-        color "#0007"
-    }
-
     struts {
-        left 10
-        right 10
-        top 10
-        bottom 10
+        left 12
+        right 12
+        top 12
+        bottom 12
     }
 }

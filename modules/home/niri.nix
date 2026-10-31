@@ -36,6 +36,7 @@
         "@@BASE00@@" = hx tc.base00;
         "@@BASE02@@" = hx tc.base02;
         "@@BASE08@@" = hx tc.base08;
+        "@@BASE09@@" = hx tc.base09;
         "@@BASE0B@@" = hx tc.base0B;
         "@@BASE0D@@" = hx tc.base0D;
       };
