@@ -6,7 +6,7 @@
         enable = true;
         enableReleaseChecks = false;
         polarity = "dark";
-        base16Scheme = ../theme/everforest-dark-hard.yaml;
+        base16Scheme = ../theme/epoch.yaml;
         image = pkgs.fetchurl {
           url = "https://raw.githubusercontent.com/Gurjaka/Everforest-Wallpapers/main/wallpapers/fog_forest_alt_1.png";
           hash = "sha256-IeQzvScaS107R+639JzH/Jaxo4Vp0G+wpAm3ufoYHbY=";
