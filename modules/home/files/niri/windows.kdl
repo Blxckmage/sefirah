@@ -9,6 +9,12 @@ window-rule {
     open-floating true
 }
 
+window-rule {
+    match app-id=r#"^steam$"# title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=0 y=0 relative-to="bottom-right"
+    block-out-from "screencast"
+}
+
 /-window-rule {
     match app-id=r#"^org\.keepassxc\.KeePassXC$"#
     match app-id=r#"^org\.gnome\.World\.Secrets$"#
