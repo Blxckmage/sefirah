@@ -76,6 +76,7 @@
         })
         thinkfan-tui
         lm_sensors
+        libreoffice
       ];
     })
   ];
