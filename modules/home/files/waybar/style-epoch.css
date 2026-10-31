@@ -1,0 +1,96 @@
+@define-color background #0d0b08;
+@define-color foreground #cfc1a3;
+@define-color active #d49a3a;
+@define-color warning #dd7357;
+@define-color tooltip_bg #16120e;
+@define-color tooltip_border #3a3126;
+@define-color tooltip_fg #e3d6b8;
+
+* {
+  background-color: @background;
+  color: @foreground;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: "PxPlus IBM VGA 8x16";
+  font-size: 16px;
+}
+
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
+#workspaces button {
+  all: initial;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+}
+
+#workspaces button.active {
+  color: @active;
+}
+
+#workspaces button.urgent {
+  color: @warning;
+}
+
+#cpu,
+#battery,
+#pulseaudio,
+#custom-nixos,
+#custom-power {
+  min-width: 12px;
+  margin: 0 7.5px;
+}
+
+#battery.warning,
+#battery.critical {
+  color: @warning;
+}
+
+#tray {
+  margin-right: 16px;
+}
+
+#bluetooth {
+  margin-right: 17px;
+}
+
+#network {
+  margin-right: 13px;
+}
+
+#custom-expand-icon {
+  margin-right: 18px;
+}
+
+#custom-sky {
+  padding: 0 12px;
+}
+
+tooltip {
+  background: @tooltip_bg;
+  border: 1px solid @tooltip_border;
+  padding: 2px;
+}
+
+tooltip label {
+  color: @tooltip_fg;
+}
+
+#clock {
+  margin-left: 5px;
+}
+
+.hidden {
+  opacity: 0;
+}
