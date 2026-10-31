@@ -6,7 +6,7 @@
 
       xdg.configFile."hypr/hypridle.conf".text = ''
         general {
-            lock_cmd = ${pkgs.hyprlock}/bin/hyprlock --config ~/.config/athanor/current/hypr/hyprlock.conf
+            lock_cmd = hyprlock --config ~/.config/athanor/current/hypr/hyprlock.conf
             before_sleep_cmd = loginctl lock-session
             after_sleep_cmd = hyprctl dispatch dpms on
         }
