@@ -8,14 +8,14 @@ final: prev: {
     __structuredAttrs = true;
 
     pname = "9router";
-    version = "0.5.99";
+    version = "0.5.112";
 
     src = prev.fetchzip {
       url = "https://registry.npmjs.org/9router/-/9router-${finalAttrs.version}.tgz";
-      hash = "sha256-uz1EiuxtYbWANgMsYO8VdDJVtiMyiJPCScLOOkYhNjQ=";
+      hash = "sha256-XEtAwfDUOVlKTRm/P+O+9smDpBzf5Lj3edXEm1DcvdE=";
     };
 
-    npmDepsHash = "sha256-R3RFTB7Trm75fbVsCtFo+wb/jRTrIG4ZC5kKDQdQHKo=";
+    npmDepsHash = "sha256-MSvCM1CnK1faioyE3M1fu+2t4oqeindqf00eouWWMno=";
 
     postPatch = ''
       ${prev.lib.getExe' prev.nodejs "node"} --eval '
