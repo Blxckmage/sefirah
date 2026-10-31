@@ -98,7 +98,6 @@
     {
       home.packages = with pkgs; [
         niri-only
-        swaylock
         swayidle
         swaybg
         gammastep
@@ -148,12 +147,12 @@
       services.swayidle = {
         enable = true;
         events = {
-          before-sleep = "${niri-only}/bin/niri-only ${pkgs.swaylock}/bin/swaylock";
+          before-sleep = "${niri-only}/bin/niri-only ${pkgs.swaylock-effects}/bin/swaylock";
         };
         timeouts = [
           {
             timeout = 300;
-            command = "${niri-only}/bin/niri-only ${pkgs.swaylock}/bin/swaylock";
+            command = "${niri-only}/bin/niri-only ${pkgs.swaylock-effects}/bin/swaylock";
           }
           {
             timeout = 330;
