@@ -7,6 +7,7 @@
   "modules-left": ["custom/nixos", "niri/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
+    "custom/sky",
     "group/tray-expander",
     "bluetooth",
     "network",
@@ -41,6 +42,12 @@
     "on-click": "tofi-drun --drun-launch=true",
     "on-click-right": "kitty",
     "tooltip-format": "Launcher\n\nSuper + D"
+  },
+  "custom/sky": {
+    "exec": "epoch-sky --waybar --follow",
+    "return-type": "json",
+    "restart-interval": 5,
+    "tooltip": true
   },
   "cpu": {
     "interval": 5,
