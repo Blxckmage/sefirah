@@ -9,7 +9,7 @@ set -u
 WALL_DIR="$HOME/Pictures/wallpapers"
 LINK="$HOME/Pictures/wallpaper.jpg"
 
-files=$(find "$WALL_DIR" -maxdepth 1 -type f \
+files=$(find -L "$WALL_DIR" -maxdepth 1 -type f \
   \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
   -printf '%f\n' 2>/dev/null | sort)
 if [ -z "$files" ]; then

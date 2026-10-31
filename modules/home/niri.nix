@@ -106,6 +106,14 @@
         # (default), so XWayland apps like Steam keep working on Niri.
       ];
 
+      home.file = {
+        "Pictures/wallpaper.jpg" = {
+          source = ../theme/wallpapers/epoch-umber-desk-1.png;
+          force = true;
+        };
+        "Pictures/wallpapers/epoch-umber-desk-1.png".source = ../theme/wallpapers/epoch-umber-desk-1.png;
+      };
+
       wayland.windowManager.niri = {
         enable = true;
         # Same package programs.niri installs: no version drift, and it turns
