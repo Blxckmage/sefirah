@@ -10,5 +10,5 @@ animations {
 }
 
 switch-events {
-    lid-close { spawn "swaylock"; }
+    lid-close { spawn "hyprlock"; }
 }

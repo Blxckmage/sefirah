@@ -98,7 +98,6 @@
     {
       home.packages = with pkgs; [
         niri-only
-        swayidle
         swaybg
         gammastep
         # xwayland-satellite arrives via wayland.windowManager.niri below
@@ -143,24 +142,7 @@
         export XCURSOR_SIZE="${cursorSize}"
         export XCURSOR_THEME="${cursorTheme}"
       '';
-
-      services.swayidle = {
-        enable = true;
-        events = {
-          before-sleep = "${niri-only}/bin/niri-only ${pkgs.swaylock-effects}/bin/swaylock";
-        };
-        timeouts = [
-          {
-            timeout = 300;
-            command = "${niri-only}/bin/niri-only ${pkgs.swaylock-effects}/bin/swaylock";
-          }
-          {
-            timeout = 330;
-            command = "${niri-only}/bin/niri-only ${pkgs.niri}/bin/niri msg action power-off-monitors";
-            resumeCommand = "${niri-only}/bin/niri-only ${pkgs.niri}/bin/niri msg action power-on-monitors";
-          }
-        ];
-      };
+      # Idle/lock handled by hypridle + hyprlock (athanor-generated)
     })
   ];
 }
