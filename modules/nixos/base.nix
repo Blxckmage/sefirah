@@ -17,6 +17,7 @@
         (import ../../overlays/waybar-git.nix)
         (import ../../overlays/thinkfan-tui.nix)
         (import ../../overlays/9router.nix)
+        (import ../../overlays/spotify.nix)
       ];
 
       nixpkgs.config.allowUnfree = true;
