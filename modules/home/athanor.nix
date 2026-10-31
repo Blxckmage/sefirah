@@ -5,7 +5,7 @@
       athanor = pkgs.python3Packages.buildPythonPackage rec {
         pname = "athanor";
         version = "0.2.0";
-        src = builtins.path { path = /home/blackmage/Projects/scratch/athanor; recursive = true; };
+        src = ../../athanor-src;
         format = "pyproject";
         nativeBuildInputs = [ pkgs.python3Packages.hatchling ];
         propagatedBuildInputs = with pkgs.python3Packages; [];
