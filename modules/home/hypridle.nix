@@ -1,27 +1,37 @@
-{ pkgs, ... }:
+{ ... }:
 {
   config.sefirah.homeModules = [
-    ({ pkgs, ... }: {
+    ({ config, pkgs, ... }:
+    let
+      lock = "${config.home.profileDirectory}/bin/sefirah-lock";
+      niri = "${pkgs.niri}/bin/niri";
+    in
+    {
       home.packages = [ pkgs.hypridle ];
 
-      xdg.configFile."hypr/hypridle.conf".text = ''
-        general {
-            lock_cmd = hyprlock --config ~/.config/athanor/current/hypr/hyprlock.conf
-            before_sleep_cmd = loginctl lock-session
-            after_sleep_cmd = hyprctl dispatch dpms on
-        }
+      services.hypridle = {
+        enable = true;
+        systemdTarget = "graphical-session.target";
+        settings = {
+          general = {
+            lock_cmd = lock;
+            before_sleep_cmd = lock;
+            after_sleep_cmd = "${niri} msg action power-on-monitors";
+          };
 
-        listener {
-            timeout = 600
-            on-timeout = loginctl lock-session
-        }
-
-        listener {
-            timeout = 900
-            on-timeout = hyprctl dispatch dpms off
-            on-resume = hyprctl dispatch dpms on
-        }
-      '';
+          listener = [
+            {
+              timeout = 600;
+              on-timeout = lock;
+            }
+            {
+              timeout = 900;
+              on-timeout = "${niri} msg action power-off-monitors";
+              on-resume = "${niri} msg action power-on-monitors";
+            }
+          ];
+        };
+      };
     })
   ];
 }
