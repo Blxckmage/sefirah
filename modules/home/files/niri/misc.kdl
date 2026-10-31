@@ -10,5 +10,5 @@ animations {
 }
 
 switch-events {
-    lid-close { spawn "hyprlock"; }
+    lid-close { spawn "sefirah-lock"; }
 }

@@ -142,7 +142,7 @@
         export XCURSOR_SIZE="${cursorSize}"
         export XCURSOR_THEME="${cursorTheme}"
       '';
-      # Idle/lock handled by hypridle + hyprlock (athanor-generated)
+      # Idle/lock handled by hypridle + hyprlock (sefirah-generated)
     })
   ];
 }
