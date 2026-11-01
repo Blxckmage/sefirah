@@ -21,6 +21,7 @@
         git
         curl
         python3
+        sefirah
         nodejs
         bun
         mise

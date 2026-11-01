@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sefirah"
+version = "0.1.0"
+description = "Sefirah command line tools"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+sefirah = "sefirah.cli:main"
+
+[tool.setuptools]
+packages = ["sefirah"]

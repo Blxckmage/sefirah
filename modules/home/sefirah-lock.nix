@@ -3,37 +3,25 @@
   config.sefirah.homeModules = [
     ({ pkgs, ... }:
     let
-      sefirah = pkgs.writeScriptBin "sefirah" ''
-        #!${pkgs.python3}/bin/python3
-        ${builtins.replaceStrings
-          [ "@@LOCK_WALLPAPER@@" ]
-          [ "${../theme/wallpapers/epoch-umber-lock.png}" ]
-          (builtins.readFile ./sefirah-lock-dir/sefirah.py)}
-      '';
+      wallpaper = "${../theme/wallpapers/epoch-umber-lock.png}";
 
       sefirah-lock = pkgs.writeShellScriptBin "sefirah-lock" ''
         cfg="$HOME/.config/sefirah/current/hypr/hyprlock.conf"
-        if [ ! -f "$cfg" ]; then
-          ${sefirah}/bin/sefirah transmute >/dev/null
+        if [ ! -s "$cfg" ]; then
+          SEFIRAH_WALLPAPER="${wallpaper}" ${pkgs.sefirah}/bin/sefirah transmute >/dev/null 2>&1 || true
         fi
-        exec ${pkgs.hyprlock}/bin/hyprlock --config "$cfg" --immediate-render --no-fade-in "$@"
+        if [ -s "$cfg" ]; then
+          exec ${pkgs.hyprlock}/bin/hyprlock --config "$cfg" --immediate-render --no-fade-in "$@"
+        fi
+        exec ${pkgs.hyprlock}/bin/hyprlock --immediate-render --no-fade-in "$@"
       '';
     in
     {
-      home.packages = [
-        sefirah
-        sefirah-lock
-        pkgs.imagemagick
-      ];
+      home.packages = [ sefirah-lock ];
 
-      # Sefirah config
-      xdg.configFile."sefirah/config.toml".text = ''
-        [display]
-        terminal_font = "vga"
-        pixel_scale = 0
-
-        [tarot]
-        on_login = true
+      home.sessionVariables.SEFIRAH_WALLPAPER = wallpaper;
+      xdg.configFile."uwsm/env.d/sefirah".text = ''
+        export SEFIRAH_WALLPAPER="${wallpaper}"
       '';
 
       # Generate hyprlock config at startup
@@ -41,7 +29,7 @@
         [Desktop Entry]
         Type=Application
         Name=Sefirah Transmute
-        Exec=sefirah transmute
+        Exec=${pkgs.sefirah}/bin/sefirah transmute
         X-GNOME-Autostart-enabled=true
       '';
     })
