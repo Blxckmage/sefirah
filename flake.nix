@@ -19,6 +19,7 @@
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     spotifast.url = "github:crmne/spotifast";
     spotifast.inputs.nixpkgs.follows = "nixpkgs";
+    mocktail.url = "github:komaruworld/mocktail";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {

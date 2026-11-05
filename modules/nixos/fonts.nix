@@ -11,8 +11,10 @@
     {
       fonts.packages = with pkgs; [
         ultimate-oldschool-pc-font-pack
+        kode-mono
         terminus_font_ttf
         cozette
+        lxgw-wenkai-screen
         nerd-fonts.symbols-only
         (runCommand "jacquard-24" { } ''
           install -Dm644 ${jacquard24} $out/share/fonts/truetype/Jacquard24-Regular.ttf

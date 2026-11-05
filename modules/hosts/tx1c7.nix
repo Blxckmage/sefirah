@@ -37,10 +37,7 @@ in
         };
       }
       ({ config, pkgs, ... }: {
-        # Manual fan control means the fan can be held at level 0. Keep
-        # thermald as the passive-throttle backstop, and cap package power
-        # below so the Comet Lake-U cannot outrun this chassis' passive
-        # cooling. The fan itself is never touched here.
+        # Manual fan + thermald backstop, power capped for passive cooling.
         services.thermald.enable = true;
 
         systemd.services.cpu-power-cap = {
@@ -79,12 +76,8 @@ in
           };
         };
 
-        # Kyber I/O scheduler: 2ms read-latency target keeps interactive
-        # reads flowing under write floods.
-        # NOTE: both AC and battery stay on `balanced`. The old udev rule
-        # pinned AC to `performance` (max_perf 100% + turbo), which removed
-        # all thermal headroom on this thin chassis. Switch to
-        # `performance` manually via power-profile-tofi when needed.
+        # Both AC and battery stay on `balanced`. Switch to `performance`
+        # manually via power-profile-tofi when needed.
         #------------------
         # services.udev.extraRules = ''
         #   ACTION=="add|change", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="nvme*|sd*|mmcblk*|vd*", ATTR{queue/scheduler}="kyber"
@@ -114,16 +107,14 @@ in
         # };
         #------------------
 
-        # Game-aware auto-nice daemon with CachyOS's ruleset. If it ever
-        # fights gamemode's renice on FM24, disable this first.
+        # Game-aware auto-nice daemon with CachyOS ruleset.
         services.ananicy = {
           enable = true;
           package = pkgs.ananicy-cpp;
           rulesProvider = pkgs.ananicy-rules-cachyos;
         };
 
-        # Transparent Huge Pages: always (CachyOS-style). Helps tcmalloc
-        # apps like Chromium and Proton/Wine games; costs some RAM.
+        # THP always enabled (CachyOS). Helps Chromium/Proton, costs some RAM.
         systemd.tmpfiles.rules = [
           "w /sys/kernel/mm/transparent_hugepage/enabled - - - - always"
         ];

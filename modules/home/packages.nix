@@ -5,7 +5,7 @@
       home.packages = with pkgs; [
         impala
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
-        claude-code
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
         (brave.override {
           commandLineArgs = "--force-device-scale-factor=1";
         })
@@ -68,7 +68,6 @@
           exec gamescope -f -W 1920 -H 1080 -- "$@"
         '')
         motrix-next
-        spotify
         (inputs.spotifast.packages.${pkgs.stdenv.hostPlatform.system}.spotifast.overrideAttrs {
           doCheck = false;
         })

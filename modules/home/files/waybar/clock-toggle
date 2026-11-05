@@ -1,0 +1,7 @@
+#!/bin/sh
+state="${XDG_RUNTIME_DIR:-/tmp}/waybar-clock-state"
+if [ "$(cat "$state" 2>/dev/null)" = date ]; then
+  echo time > "$state"
+else
+  echo date > "$state"
+fi

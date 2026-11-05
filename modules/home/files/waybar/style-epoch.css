@@ -1,6 +1,5 @@
 @define-color background #0d0b08;
 @define-color foreground #cfc1a3;
-@define-color active #d49a3a;
 @define-color warning #dd7357;
 @define-color tooltip_bg #16120e;
 @define-color tooltip_border #3a3126;
@@ -26,9 +25,14 @@
 
 #workspaces button {
   all: initial;
+  font-family: "LXGW WenKai Screen";
+  font-weight: bold;
   padding: 0 6px;
   margin: 0 1.5px;
   min-width: 9px;
+  color: @foreground;
+  background-color: transparent;
+  border-radius: 0;
 }
 
 #workspaces button.empty {
@@ -36,7 +40,7 @@
 }
 
 #workspaces button.active {
-  color: @active;
+  opacity: 1;
 }
 
 #workspaces button.urgent {
@@ -62,19 +66,15 @@
 }
 
 #bluetooth {
-  margin-right: 17px;
+  margin-right: 8px;
 }
 
 #network {
-  margin-right: 13px;
+  margin-right: 8px;
 }
 
 #custom-expand-icon {
-  margin-right: 18px;
-}
-
-#custom-sky {
-  padding: 0 12px;
+  margin-right: 8px;
 }
 
 tooltip {
@@ -87,7 +87,7 @@ tooltip label {
   color: @tooltip_fg;
 }
 
-#clock {
+#custom-clock {
   margin-left: 5px;
 }
 

@@ -15,13 +15,10 @@
       hx = hex: lib.toLower (lib.removePrefix "#" hex);
       homeDir = config.home.homeDirectory;
       scriptsDir = "${homeDir}/.config/niri/scripts";
-      # Cursor follows the Stylix-driven pointer theme (see nixos/stylix.nix);
-      # single override point if Niri should ever diverge from it.
+      # Cursor theme from Stylix.
       cursorTheme = config.home.pointerCursor.name;
       cursorSize = toString config.home.pointerCursor.size;
 
-      # @@PLACEHOLDER@@ substitution with an assertion so a renamed
-      # anchor fails the build instead of shipping a literal "@@...@@".
       subst = placeholders: prev:
         let
           from = builtins.attrNames placeholders;

@@ -23,8 +23,8 @@
           tab_bar_edge = "bottom";
           tab_bar_style = "powerline";
           tab_powerline_style = "slanted";
-          font_family = "Px437 Tandy2K";
-          bold_font = "Px437 AT&T PC6300";
+          font_family = "Kode Mono";
+          bold_font = "Kode Mono";
           font_size = 12;
           foreground = "#e3d6b8";
           background = "#16120e";

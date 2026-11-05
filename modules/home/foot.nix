@@ -7,8 +7,8 @@
         enable = true;
         settings = {
           main = {
-            font = "Px437 Tandy2K:pixelsize=16,Symbols Nerd Font Mono:pixelsize=12:antialias=false:rgba=none";
-            "font-bold" = "Px437 AT&T PC6300:pixelsize=16,Symbols Nerd Font Mono:pixelsize=12:antialias=false:rgba=none";
+            font = "Kode Mono:pixelsize=16,Symbols Nerd Font Mono:pixelsize=12:antialias=false:rgba=none";
+            "font-bold" = "Kode Mono:pixelsize=16,Symbols Nerd Font Mono:pixelsize=12:antialias=false:rgba=none";
             pad = "14x14";
             "dpi-aware" = "no";
           };

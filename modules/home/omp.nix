@@ -27,10 +27,7 @@
       {
       programs.omp = {
         enable = true;
-        # Declare the full wizard-completed state so the activation copy is
-        # idempotent: previously only startup.quiet was declared, so every
-        # switch rewrote config.yml and wiped setupVersion/modelRoles/theme,
-        # sending omp back to setup. Matches live ~/.omp/agent/config.yml.
+        # Full wizard state declared for idempotent activation.
         settings = {
           startup.quiet = true;
           setupVersion = 2;
@@ -43,24 +40,14 @@
 
       home.packages = [ pkgs._9router ];
 
-      # Local 9Router gateway as an omp custom provider. Managed as a
-      # writable regular file via activation (same pattern as upstream
-      # programs.omp.settings), NOT home.file: a store symlink is read-only,
-      # so the setup wizard / discovery merge cannot persist and every launch
-      # revisits setup. Content mirrors the working live file: 4 static
-      # combos + openai-models-list discovery (verified: `omp models
-      # ninerouter` merges to 32 entries). apiKey resolves as env var
-      # NINEROUTER_KEY first, literal otherwise — so
-      # `export NINEROUTER_KEY="sk-..."` (dashboard key) wins and no secret
-      # lands in the Nix store. Keyless local installs accept anything.
-      # Verify with: omp models ninerouter
+      # 9Router custom provider. Writable file via activation (not home.file)
+      # for setup wizard persistence. apiKey resolves NINEROUTER_KEY env var.
       home.activation.ompModels = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         mkdir -p "$HOME/.omp/agent"
         install -m 600 ${ompModelsFile} "$HOME/.omp/agent/models.yml"
       '';
 
-      # --skip-update: Nix store is immutable, updates come via rebuilds.
-      # --host 127.0.0.1: local-only bind, no LAN exposure for the gateway.
+      # --skip-update: updates via rebuilds. --host 127.0.0.1: local-only.
       systemd.user.services."9router" = {
         Unit = {
           Description = "9Router local AI gateway";
@@ -75,8 +62,6 @@
         Install.WantedBy = [ "default.target" ];
       };
 
-      # Claude Code via the gateway: endpoint is static, the key resolves
-      # at runtime (see initContent) so no secret lands in the store.
       home.sessionVariables = {
         ANTHROPIC_BASE_URL = "http://localhost:20128/v1";
       };
@@ -84,15 +69,15 @@
       programs.zsh.initContent = ''
         if command -v omp &>/dev/null; then eval "$(omp completions zsh)"; fi
 
-        # 9router gateway key (dashboard Default Key), resolved at runtime so
-        # no secret lands in the store. An exported NINEROUTER_KEY wins.
+        # 9router gateway key from sqlite, runtime-resolved.
         if [ -z "$NINEROUTER_KEY" ]; then
           _nine_key=$(python3 -c "import sqlite3; print(sqlite3.connect('file://$HOME/.9router/db/data.sqlite?mode=ro', uri=True).execute('select key from apiKeys where isActive = 1 limit 1').fetchone()[0])" 2>/dev/null)
           [ -n "$_nine_key" ] && export NINEROUTER_KEY="$_nine_key"
           unset _nine_key
         fi
-        if [ -n "$NINEROUTER_KEY" ] && [ -z "$ANTHROPIC_AUTH_TOKEN" ]; then
-          export ANTHROPIC_AUTH_TOKEN="$NINEROUTER_KEY"
+        if [ -n "$NINEROUTER_KEY" ]; then
+          [ -z "$ANTHROPIC_AUTH_TOKEN" ] && export ANTHROPIC_AUTH_TOKEN="$NINEROUTER_KEY"
+          [ -z "$ANTHROPIC_API_KEY" ] && export ANTHROPIC_API_KEY="$NINEROUTER_KEY"
         fi
       '';
     })

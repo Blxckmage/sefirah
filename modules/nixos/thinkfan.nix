@@ -2,10 +2,7 @@
 {
   config.sefirah.nixosModules = [
     {
-      # Fan speed is intentionally fully manual. fan_watchdog=0 stops the
-      # kernel from reclaiming or changing the fan behind thinkfan-tui's back.
-      # Thermal safety comes from thermald + the CPU power cap in
-      # modules/hosts/tx1c7.nix, never from touching the fan.
+      # Manual fan control. Thermal safety via thermald + power cap.
       boot.extraModprobeConfig = ''
         options thinkpad_acpi fan_control=1
       '';
@@ -27,11 +24,7 @@
         '';
       };
 
-      # thinkpad_acpi only restores level 7 / full-speed on resume; levels
-      # 0-6 are deliberately dropped and the DSDT hands the fan back to its
-      # own automatic control. Remember whatever thinkfan-tui has set just
-      # before sleeping and write it back after waking, so manual fan control
-      # survives suspend.
+      # Preserve manual fan level across suspend/resume.
       systemd.services.fan-level-save = {
         description = "Remember the ThinkPad fan level before suspend";
         before = [ "sleep.target" ];
