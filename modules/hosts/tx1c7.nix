@@ -22,6 +22,9 @@ in
         # zswap in front of swap-on-zram just wastes cycles (Omarchy disables it too).
         boot.kernelParams = [ "zswap.enabled=0" ];
 
+        # Disable SD card reader (00:08.0 xD/SD) to save power if unused.
+        boot.blacklistedKernelModules = [ "rtsx_pci_sdmmc" "mmc_block" ];
+
         # Omarchy's reclaim tuning for swap-on-zram (disk-era defaults assume slow swap).
         boot.kernel.sysctl = {
           "vm.swappiness" = 150;
@@ -37,16 +40,31 @@ in
         };
       }
       ({ config, pkgs, ... }: {
-        # Manual fan + thermald backstop, power capped for passive cooling.
-        services.thermald.enable = true;
+        # thermald is broken on X1C7 (dytc_lapmode present); use throttled instead.
+        services.thermald.enable = false;
 
+        # throttled: fixes Lenovo 80°C throttling bug, manages RAPL/PPL, undervolts if available.
+        # Conflicts with thermald — keep thermald disabled.
+        # Use the package's own service; override args via drop-in.
+        systemd.services.throttled = {
+          enable = true;
+          wantedBy = [ "multi-user.target" ];
+          after = [ "power-profiles-daemon.service" ];
+          serviceConfig = {
+            ExecStart = "${pkgs.throttled}/bin/throttled --sysfs --rapl --tcc-offset --tcc-offset-degrees=5";
+          };
+        };
+
+        # RAPL power cap: PL1=12W (near 15W TDP), PL2=25W burst (cTDP-up).
+        # Time windows explicit: PL1=28s (default), PL2=2.44ms (default).
+        # Re-apply every 60s in case PPD/throttled rewrites limits.
         systemd.services.cpu-power-cap = {
           description = "Cap Intel RAPL package power for manual-fan use";
           wantedBy = [ "multi-user.target" ];
-          wants = [ "power-profiles-daemon.service" ];
+          wants = [ "power-profiles-daemon.service" "throttled.service" ];
           after = [
             "power-profiles-daemon.service"
-            "thermald.service"
+            "throttled.service"
           ];
           path = [ pkgs.coreutils ];
           serviceConfig.Type = "oneshot";
@@ -59,19 +77,21 @@ in
               fi
               sleep 1
             done
-            echo 10000000 > "$rapl/constraint_0_power_limit_uw"
-            echo 15000000 > "$rapl/constraint_1_power_limit_uw"
+            echo 12000000 > "$rapl/constraint_0_power_limit_uw"   # PL1 = 12W
+            echo 28000000 > "$rapl/constraint_0_time_window_us"
+            echo 25000000 > "$rapl/constraint_1_power_limit_uw"   # PL2 = 25W
+            echo 2440     > "$rapl/constraint_1_time_window_us"
             echo "cpu-power-cap: PL1=$(cat "$rapl/constraint_0_power_limit_uw") PL2=$(cat "$rapl/constraint_1_power_limit_uw")"
           '';
         };
 
-        # Re-apply in case PPD/thermald rewrites the RAPL limits later.
+        # Re-apply in case PPD/throttled rewrites the RAPL limits later.
         systemd.timers.cpu-power-cap = {
           description = "Re-apply the manual-fan CPU power cap";
           wantedBy = [ "timers.target" ];
           timerConfig = {
             OnBootSec = "2min";
-            OnUnitActiveSec = "5min";
+            OnUnitActiveSec = "60s";
             Unit = "cpu-power-cap.service";
           };
         };
