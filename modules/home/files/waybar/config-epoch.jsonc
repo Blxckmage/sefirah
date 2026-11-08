@@ -11,6 +11,7 @@
     "bluetooth",
     "network",
     "pulseaudio",
+    "backlight",
     "cpu",
     "battery",
     "custom/power"
@@ -104,6 +105,16 @@
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
     "format-muted": "{icon}: mute"
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "bright: {percent}%",
+    "interval": 2,
+    "min-brightness": 15.0,
+    "scroll-step": 5,
+    "tooltip": false,
+    "cursor": "pointer",
+    "on-click": "sh -c 'if pkill gammastep; then notify-send \"Nightlight\" \"Off\"; else gammastep -O 3500 & notify-send \"Nightlight\" \"On\"; fi'"
   },
   "group/tray-expander": {
     "orientation": "inherit",

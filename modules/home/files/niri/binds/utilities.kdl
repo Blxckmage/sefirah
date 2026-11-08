@@ -15,5 +15,5 @@
     Mod+Ctrl+Space hotkey-overlay-title="Wallpaper picker" { spawn "@@SCRIPTS@@/wallpaper-tofi.sh"; }
     Mod+Ctrl+Delete hotkey-overlay-title="Close all windows" { spawn "@@SCRIPTS@@/close-all.sh"; }
     Mod+Backspace hotkey-overlay-title="Toggle window transparency" { toggle-window-rule-opacity; }
-    Mod+Ctrl+N hotkey-overlay-title="Toggle nightlight" { spawn-sh "if pgrep -x gammastep >/dev/null; then pkill -x gammastep && notify-send 'Nightlight' 'Off'; else gammastep -O 3500 & notify-send 'Nightlight' 'On'; fi"; }
+    Mod+Ctrl+N hotkey-overlay-title="Toggle nightlight" { spawn-sh "if pkill gammastep; then notify-send 'Nightlight' 'Off'; else gammastep -O 3500 & notify-send 'Nightlight' 'On'; fi"; }
     Mod+Ctrl+I hotkey-overlay-title="Toggle idle lock" { spawn-sh "if systemctl --user is-active --quiet hypridle; then systemctl --user stop hypridle; notify-send 'Idle lock' 'Off'; else systemctl --user start hypridle; notify-send 'Idle lock' 'On'; fi"; }

@@ -9,8 +9,6 @@
       ];
 
       nix.settings = {
-        extra-substituters = [ "https://blxckmage.cachix.org" ];
-        extra-trusted-public-keys = [ "blxckmage.cachix.org-1:VXMamvKEyeu6CthXawUNSxcFB49to7r4tOWpFrWAR3s=" ];
       };
 
       nixpkgs.overlays = [
@@ -29,6 +27,7 @@
         flake = "/home/blackmage/.config/nixpkgs";
         clean.enable = true;
       };
+
 
       environment.systemPackages = with pkgs; [ wget ];
 

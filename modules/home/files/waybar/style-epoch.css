@@ -50,6 +50,7 @@
 #cpu,
 #battery,
 #pulseaudio,
+#backlight,
 #custom-nixos,
 #custom-power {
   min-width: 12px;
