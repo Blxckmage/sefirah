@@ -20,10 +20,17 @@
     spotifast.url = "github:crmne/spotifast";
     spotifast.inputs.nixpkgs.follows = "nixpkgs";
     mocktail.url = "github:komaruworld/mocktail";
+    den.url = "github:denful/den/bf2504f9f2e8621fee091335132ab3ae698cf808";
+    den-diagram.url = "github:denful/den-diagram/268bdbd9678ca3afab4ccbf40c76cf90b6205e2b";
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-    imports = [ (inputs.import-tree ./modules) ];
-    systems = [ "x86_64-linux" ];
+  outputs = { self, nixpkgs, flake-parts, import-tree, home-manager, nixos-hardware, stylix, llm-agents, omp, luvus, nix-flatpak, nixCats, spotifast, mocktail, den, ... }@inputs:
+  let
+    denDiagram = builtins.getAttr "den-diagram" inputs;
+    flakeInputs = inputs // { "den-diagram" = denDiagram; };
+    flake = flakeInputs.flake-parts.lib.mkFlake { inputs = flakeInputs; } (flakeInputs.import-tree ./modules { filter = flakeInputs.import-tree.initFilter; });
+  in
+  flake // {
+    denDiagrams-mermaid = flake.diagrams.tx1c7-mermaid;
   };
 }

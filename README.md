@@ -1,240 +1,217 @@
-# ╔══════════════════════════════════════════════════════════════════════════════╗
-# ║                    🌑  sefirah  —  dendritic NixOS + Home Manager  🌑         ║
-# ║                              *techno maniac wizard black mage*               ║
-# ╚══════════════════════════════════════════════════════════════════════════════╝
+# Sefirah
 
 <p align="center">
   <img src="assets/banner.png" alt="sefirah banner" width="100%">
-  <br>
-  <em>— The Tree of Life, inverted. Roots in the machine, branches in the void. —</em>
 </p>
 
 ---
 
-## 📜 Grimoire Overview
+## Overview
 
-This is **sefirah** — a NixOS + Home Manager configuration forged for the **ThinkPad X1 Carbon 7th Gen (i7-8665U)**, woven with dendritic patterns where every module is a node, every overlay a sigil, and the flake itself a living spellbook.
+This is **sefirah** — a NixOS + Home Manager configuration forged for the **ThinkPad X1 Carbon 7th Gen (i7-8665U)**.
 
-> **Philosophy**: *Configuration as code, code as ritual. No imperative mutations. Only pure functions composing into a system that breathes.*
+### Composition
 
-### 🏰 Major Realms
-
-| Realm | Purpose | Key Artifacts |
-|-------|---------|---------------|
-| **🐚 Shell** | The incantation layer | `zsh` + `fzf-tab`, `zsh-autosuggestions`, `fast-syntax-highlighting`, `you-should-use` · `atuin` (history) · `zoxide` (navigation) · `eza` (ls) |
-| **🖥 Terminal** | The portal | `foot` (Wayland native) · `kitty` (GPU-accelerated fallback) |
-| **⌨️ Editor** | The codex | `nixCats-nvim` (modular Neovim) · `lazygit` · `lazydocker` |
-| **🪟 Compositor** | The window weaver | `niri` (scrollable-tiling) · KDL fragments + Stylix theming · `niri-only` guard |
-| **📊 Bar** | The status sigil | `waybar` (epoch theme) · `mako` (notifications) · `walker` (launcher) |
-| **🔐 Lock/Idle** | The ward | `hypridle` + `hyprlock` (Niri-agnostic) |
-| **🎮 Gaming** | The arena | `heroic` + `gamescope` · `steam` · `ananicy-cpp` (CachyOS rules) |
-| **🎵 Media** | The resonance | `spotifast` (Spotify TUI) · `wiremix` (audio) · `playerctl` |
-| **📁 Files** | The archive | `nautilus` · `yazi` (TUI) · `sushi` (preview) |
-| **🔧 Dev Tools** | The forge | `mise` (runtimes) · `nodejs`/`bun`/`rustc`/`cargo` · `gcc` · `lua`/`luarocks` · `python3` · `git` + `gh` · `httpie` · `jq` · `ripgrep` · `fd` · `bat` · `tealdeer` · `fastfetch` |
-| **🌐 Browser** | The scrying glass | `brave` (forced scale) · `discord` (OpenASAR) |
-| **📦 Packaging** | The alembic | `nix-flatpak` · `mocktail` (macOS runner) |
-| **⚙️ System** | The skeleton | `power-profiles-daemon` (balanced) · `throttled` (Lenovo 80°C fix, RAPL, TCC offset) · `zram` (zstd, 100%) · `thinkpad_acpi` manual fan control |
-| **🔑 Secrets** | The vault | `sops` + `age` |
-| **🎨 Theming** | The glamour | `stylix` (base16/everforest/epoch) · `tela-icon-theme` · `gammastep` (nightlight) |
+| Realm             | Purpose               | Key Artifacts                                                                                                                                                                    |
+| ----------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **🐚 Shell**      | The incantation layer | `zsh` + `fzf-tab`, `zsh-autosuggestions`, `fast-syntax-highlighting`, `you-should-use` · `atuin` (history) · `zoxide` (navigation) · `eza` (ls)                                  |
+| **🖥 Terminal**   | The portal            | `foot` (Wayland native) · `kitty` (GPU-accelerated fallback)                                                                                                                     |
+| **⌨️ Editor**     | The codex             | `nixCats-nvim` (modular Neovim) · `lazygit` · `lazydocker`                                                                                                                       |
+| **🪟 Compositor** | The window weaver     | `niri` (scrollable-tiling) · KDL fragments + Stylix theming · `niri-only` guard                                                                                                  |
+| **📊 Bar**        | The status sigil      | `waybar` (epoch theme) · `mako` (notifications) · `walker` (launcher)                                                                                                            |
+| **🔐 Lock/Idle**  | The ward              | `hypridle` + `hyprlock` (Niri-agnostic)                                                                                                                                          |
+| **🎮 Gaming**     | The arena             | `heroic` + `gamescope` · `steam` · `ananicy-cpp` (CachyOS rules)                                                                                                                 |
+| **🎵 Media**      | The resonance         | `spotifast` (Spotify TUI) · `wiremix` (audio) · `playerctl`                                                                                                                      |
+| **📁 Files**      | The archive           | `nautilus` · `yazi` (TUI) · `sushi` (preview)                                                                                                                                    |
+| **🔧 Dev Tools**  | The forge             | `mise` (runtimes) · `nodejs`/`bun`/`rustc`/`cargo` · `gcc` · `lua`/`luarocks` · `python3` · `git` + `gh` · `httpie` · `jq` · `ripgrep` · `fd` · `bat` · `tealdeer` · `fastfetch` |
+| **🌐 Browser**    | The scrying glass     | `brave` (forced scale) · `discord` (OpenASAR)                                                                                                                                    |
+| **📦 Packaging**  | The alembic           | `nix-flatpak` · `mocktail` (macOS runner)                                                                                                                                        |
+| **⚙️ System**     | The skeleton          | `power-profiles-daemon` (balanced) · `throttled` (Lenovo 80°C fix, RAPL, TCC offset) · `zram` (zstd, 100%) · `thinkpad_acpi` manual fan control                                  |
+| **🔑 Secrets**    | The vault             | `sops` + `age`                                                                                                                                                                   |
+| **🎨 Theming**    | The glamour           | `stylix` (base16/everforest/epoch) · `tela-icon-theme` · `gammastep` (nightlight)                                                                                                |
 
 ### 🖥 Host: **sefirah** (ThinkPad X1 Carbon 7th Gen)
 
-| Spec | Value |
-|------|-------|
-| CPU | i7-8665U (Whiskey Lake, 4C/8T, 15W TDP, TjMax 100°C) |
-| Thermal | Manual fan (`fan_control=1`, watchdog=0, keepalive@1s) · `throttled --sysfs --rapl --tcc-offset --tcc-offset-degrees=5` |
-| Power | RAPL PL1=12W / PL2=25W (re-applied every 60s) · `power-profiles-daemon` locked to `balanced` |
-| Memory | zram swap (zstd, 100%, swappiness=150) · zswap disabled |
-| Storage | NVMe · `kyber` scheduler (udev rule) |
-| SD Reader | **Blacklisted** (`rtsx_pci_sdmmc`, `mmc_block`) — saves ~2W |
-| Suspend | **Disabled** — lid/keys ignored, lock via `hypridle` only |
+| Spec      | Value                                                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| CPU       | i7-8665U (Whiskey Lake, 4C/8T, 15W TDP, TjMax 100°C)                                                                    |
+| Thermal   | Manual fan (`fan_control=1`, watchdog=0, keepalive@1s) · `throttled --sysfs --rapl --tcc-offset --tcc-offset-degrees=5` |
+| Power     | RAPL PL1=12W / PL2=25W (re-applied every 60s) · `power-profiles-daemon` locked to `balanced`                            |
+| Memory    | zram swap (zstd, 100%, swappiness=150) · zswap disabled                                                                 |
+| Storage   | NVMe · `kyber` scheduler (udev rule)                                                                                    |
+| SD Reader | **Blacklisted** (`rtsx_pci_sdmmc`, `mmc_block`) — saves ~2W                                                             |
+| Suspend   | **Disabled** — lid/keys ignored, lock via `hypridle` only                                                               |
 
 ---
 
 ## 🗺 Structure — The Dendritic Map
 
-> *Auto-generated on every push. The diagram below reflects the actual flake composition.*
+> Auto-generated from flake configuration. Run `nix run .#update-readme` to regenerate.
 
+<!-- BEGIN:AUTO-GENERATED -->
 ```mermaid
-flowchart TD
-    %% ==========================================
-    %% sefirah — dendritic NixOS + Home Manager
-    %% Auto-generated from actual flake structure
-    %% ==========================================
-
-    %% ─── FLAKE INPUTS ───
+    flowchart TD
+        %% ==========================================
+        %% sefirah — dendritic NixOS + Home Manager
+        %% Auto-generated from flake configuration
+        %% ==========================================
+    
     subgraph INPUTS["🔮 Flake Inputs"]
         direction TB
-        NP["nixpkgs\n(github:NixOS/nixpkgs/nixos-unstable)"]
-        FP["flake-parts\n(github:hercules-ci/flake-parts)"]
-        IT["import-tree\n(github:denful/import-tree)"]
-        HM["home-manager\n(github:nix-community/home-manager)"]
-        NHW["nixos-hardware\n(github:NixOS/nixos-hardware)"]
-        STY["stylix\n(github:nix-community/stylix)"]
-        LLMA["llm-agents\n(github:numtide/llm-agents.nix)"]
-        OMP["oh-my-pi\n(github:can1357/oh-my-pi)"]
-        LUV["luvus\n(github:RizRiyz/luvus)"]
-        NF["nix-flatpak\n(github:gmodena/nix-flatpak@v0.7.0)"]
-        NC["nixCats-nvim\n(github:BirdeeHub/nixCats-nvim)"]
-        SPF["spotifast\n(github:crmne/spotifast)"]
-        MT["mocktail\n(github:komaruworld/mocktail)"]
+        IN_flake-parts["flake-parts\n(github:hercules-ci/flake-parts)"]
+        IN_home-manager["home-manager\n(github:nix-community/home-manager)"]
+        IN_import-tree["import-tree\n(github:denful/import-tree)"]
+        IN_llm-agents["llm-agents\n(github:numtide/llm-agents.nix)"]
+        IN_luvus["luvus\n(github:RizRiyz/luvus)"]
+        IN_mocktail["mocktail\n(github:komaruworld/mocktail)"]
+        IN_nix-flatpak["nix-flatpak\n(github:gmodena/nix-flatpak@v0.7.0)"]
+        IN_nixCats["nixCats-nvim\n(github:BirdeeHub/nixCats-nvim)"]
+        IN_nixos-hardware["nixos-hardware\n(github:NixOS/nixos-hardware)"]
+        IN_nixpkgs["nixpkgs\n(github:NixOS/nixpkgs/nixos-unstable)"]
+        IN_omp["oh-my-pi\n(github:can1357/oh-my-pi)"]
+        IN_spotifast["spotifast\n(github:crmne/spotifast)"]
+        IN_stylix["stylix\n(github:nix-community/stylix)"]
     end
-
-    %% ─── CORE COMPOSITION ───
+    
     subgraph CORE["⚡ Core Composition"]
         direction TB
-        FLAKE["flake.nix\nflake-parts.mkFlake"]
-        MKSYS["lib/mkSystem.nix\nmkSystem { system, hostname, nixosModules, homeModules }"]
-        IMPORT["import-tree ./modules\n(auto-discovers all modules)"]
+        CORE_FLAKE["flake.nix\nflake-parts.mkFlake"]
+        CORE_MKSYS["lib/mkSystem.nix\nmkSystem { system, hostname, nixosModules, homeModules }"]
+        CORE_IMPORT["import-tree ./modules\n(auto-discovers all modules)"]
     end
-
-    %% ─── MODULE LAYER ───
-    subgraph MODULES["📦 Module Layer (deferredModule lists)"]
+    
+    subgraph SEFIRAH["config.sefirah"]
         direction TB
-        
-        subgraph SEFIRAH["config.sefirah"]
-            NM["nixosModules\n(list of deferredModule)"]
-            HM_MOD["homeModules\n(list of deferredModule)"]
-        end
-
-        subgraph NIXOS["modules/nixos/ (26 files)"]
-            N_BASE["base.nix"]
-            N_BOOT["boot.nix"]
-            N_AUDIO["audio.nix"]
-            N_BATTERY["battery.nix"]
-            N_DESKTOP["desktop.nix"]
-            N_FIREWALL["firewall.nix"]
-            N_FIRMWARE["firmware.nix"]
-            N_FLATPAK["flatpak.nix"]
-            N_FONTS["fonts.nix"]
-            N_GAMING["gaming.nix"]
-            N_GRAPHICS["graphics.nix"]
-            N_INPUT["input.nix"]
-            N_NETWORK["networking.nix"]
-            NIRI_NIX["niri.nix"]
-            N_NIXLD["nix-ld.nix"]
-            N_PLYMOUTH["plymouth.nix"]
-            N_POWER["power.nix\n(power-profiles-daemon, no suspend/hibernate, logind lid=ignore)"]
-            N_PRINTING["printing.nix"]
-            N_RUSTDESK["rustdesk.nix"]
-            N_STEAM["steam.nix"]
-            N_STYLIX["stylix.nix"]
-            N_THINKFAN["thinkfan.nix\n(manual fan: fan_control=1, watchdog=0, keepalive@1s)"]
-            N_USER["user.nix"]
-            N_BACKUP["backup.nix"]
-            N_FIREFOX["firefox.nix"]
-            N_NAUTILUS["nautilus.nix"]
-        end
-
-        subgraph HOME["modules/home/ (24 files)"]
-            H_BASE["base.nix\n(username, homedir, hm activation)"]
-            H_SHELL["shell.nix\n(zsh + fzf-tab/autosuggestions/fast-syntax-highlighting/you-should-use, atuin, zoxide, eza)"]
-            H_NIRI["niri.nix\n(KDL fragments + Stylix theming, niri-only guard)"]
-            H_FOOT["foot.nix"]
-            H_KITTY["kitty.nix"]
-            H_BTOP["btop.nix"]
-            H_DEVKEYS["dev-keys.nix"]
-            H_GTK["gtk.nix"]
-            H_HYPRIDLE["hypridle.nix"]
-            H_HYPRLOCK["hyprlock.nix"]
-            H_LUVUS["luvus.nix"]
-            H_MAKO["mako.nix"]
-            H_MOCKTAIL["mocktail.nix"]
-            H_OMP["omp.nix"]
-            H_PACKAGES["packages.nix\n(home.packages list)"]
-            H_SEFIRAH_LOCK["sefirah-lock.nix"]
-            H_SERVICES["services.nix\n(waybar user service)"]
-            H_STARSHIP["starship.nix"]
-            H_TMUX["tmux.nix"]
-            H_TOFI["tofi.nix"]
-            H_WAYBAR_STYLE["waybar-style.nix"]
-            H_YAZI["yazi.nix"]
-            H_ZELLIJ["zellij.nix"]
-            H_STARDEW["stardew.nix"]
-        end
-
-        subgraph HOSTS["modules/hosts/"]
-            TX1C7["tx1c7.nix\n(X1C7: zram, blacklist SD reader, throttled, RAPL PL1=12W/PL2=25W, ananicy-cpp)"]
-        end
+        SEF_NM["nixosModules\n(list of deferredModule)"]
+        SEF_HM["homeModules\n(list of deferredModule)"]
     end
-
-    %% ─── OVERLAYS ───
+    
+    subgraph NIXOS["modules/nixos/ (26 files)"]
+        direction TB
+        NM_audio["audio.nix"]
+        NM_backup["backup.nix"]
+        NM_base["base.nix"]
+        NM_battery["battery.nix"]
+        NM_boot["boot.nix"]
+        NM_desktop["desktop.nix"]
+        NM_firefox["firefox.nix"]
+        NM_firewall["firewall.nix"]
+        NM_firmware["firmware.nix"]
+        NM_flatpak["flatpak.nix"]
+        NM_fonts["fonts.nix"]
+        NM_gaming["gaming.nix"]
+        NM_graphics["graphics.nix"]
+        NM_input["input.nix"]
+        NM_nautilus["nautilus.nix"]
+        NM_networking["networking.nix"]
+        NM_niri["niri.nix"]
+        NM_nix-ld["nix-ld.nix"]
+        NM_plymouth["plymouth.nix"]
+        NM_power["power.nix\n(power-profiles-daemon, no suspend/hibernate, logind lid=ignore)"]
+        NM_printing["printing.nix"]
+        NM_rustdesk["rustdesk.nix"]
+        NM_steam["steam.nix"]
+        NM_stylix["stylix.nix"]
+        NM_thinkfan["thinkfan.nix\n(manual fan: fan_control=1, watchdog=0, keepalive@1s)"]
+        NM_user["user.nix"]
+    end
+    
+    subgraph HOME["modules/home/ (24 files)"]
+        direction TB
+        HM_base["base.nix\n(username, homedir, hm activation)"]
+        HM_btop["btop.nix"]
+        HM_dev-keys["dev-keys.nix"]
+        HM_foot["foot.nix"]
+        HM_gtk["gtk.nix"]
+        HM_hypridle["hypridle.nix"]
+        HM_hyprlock["hyprlock.nix"]
+        HM_kitty["kitty.nix"]
+        HM_luvus["luvus.nix"]
+        HM_mako["mako.nix"]
+        HM_mocktail["mocktail.nix"]
+        HM_niri["niri.nix\n(KDL fragments + Stylix theming, niri-only guard)"]
+        HM_omp["omp.nix"]
+        HM_packages["packages.nix\n(home.packages list)"]
+        HM_sefirah-lock["sefirah-lock.nix"]
+        HM_services["services.nix\n(waybar user service)"]
+        HM_shell["shell.nix\n(zsh + fzf-tab/autosuggestions/fast-syntax-highlighting/you-should-use, atuin, zoxide, eza)"]
+        HM_stardew["stardew.nix"]
+        HM_starship["starship.nix"]
+        HM_tmux["tmux.nix"]
+        HM_tofi["tofi.nix"]
+        HM_waybar-style["waybar-style.nix"]
+        HM_yazi["yazi.nix"]
+        HM_zellij["zellij.nix"]
+    end
+    
     subgraph OVERLAYS["🎭 Overlays"]
         direction TB
-        OV_9R["9router.nix"]
-        OV_SEF["sefirah.nix"]
-        OV_TF_TUI["thinkfan-tui.nix\n(builds thinkfan-tui from source)"]
-        OV_XWS["xwayland-satellite.nix"]
+        OV_9router["9router.nix"]
+        OV_sefirah["sefirah.nix"]
+        OV_thinkfan-tui["thinkfan-tui.nix\n(builds thinkfan-tui from source)"]
+        OV_xwayland-satellite["xwayland-satellite.nix"]
     end
-
-    %% ─── PKGS ───
+    
     subgraph PKGS["📦 Local Packages"]
         direction TB
-        SEFIRAH_PKG["pkgs/sefirah/sefirah/\n(ordinal, cmd_cards, main, cmd_draw, hour_lines,\n lock_layout, key_digest, planetary_hour, battery,\n card_of_day, cmd_transmute)"]
+        PKG_sefirah["pkgs/sefirah/sefirah/\n(ordinal, cmd_cards, main, cmd_draw, hour_lines,\n lock_layout, key_digest, planetary_hour, battery,\n card_of_day, cmd_transmute)"]
     end
-
-    %% ─── HARDWARE CONFIG ───
-    HW["hardware-configuration.nix\n(generated by nixos-generate-config)"]
-
-    %% ─── EDGES ───
-    NP --> FLAKE
-    FP --> FLAKE
-    IT --> FLAKE
-    HM --> FLAKE
-    NHW --> FLAKE
-    STY --> FLAKE
-    LLMA --> FLAKE
-    OMP --> FLAKE
-    LUV --> FLAKE
-    NF --> FLAKE
-    NC --> FLAKE
-    SPF --> FLAKE
-    MT --> FLAKE
-
-    FLAKE --> IMPORT
-    FLAKE --> MKSYS
-
-    IMPORT --> NM
-    IMPORT --> HM_MOD
-
-    NM --> NIXOS
-    HM_MOD --> HOME
-
-    MKSYS --> TX1C7
-    TX1C7 --> NHW
-    TX1C7 --> HW
-
-    NM --> OVERLAYS
-    HM_MOD --> OVERLAYS
-
-    MKSYS --> PKGS
-    TX1C7 --> PKGS
-
-    %% Styling
+    
+    
+        HW["hardware-configuration.nix\n(generated by nixos-generate-config)"]
+    
+        IN_flake-parts --> CORE_FLAKE
+        IN_home-manager --> CORE_FLAKE
+        IN_import-tree --> CORE_FLAKE
+        IN_llm-agents --> CORE_FLAKE
+        IN_luvus --> CORE_FLAKE
+        IN_mocktail --> CORE_FLAKE
+        IN_nix-flatpak --> CORE_FLAKE
+        IN_nixCats --> CORE_FLAKE
+        IN_nixos-hardware --> CORE_FLAKE
+        IN_nixpkgs --> CORE_FLAKE
+        IN_omp --> CORE_FLAKE
+        IN_spotifast --> CORE_FLAKE
+        IN_stylix --> CORE_FLAKE
+        CORE_FLAKE --> CORE_IMPORT
+        CORE_FLAKE --> CORE_MKSYS
+        CORE_IMPORT --> SEF_NM
+        CORE_IMPORT --> SEF_HM
+        CORE_MKSYS --> NM_niri
+        CORE_MKSYS --> HW
+        SEF_NM --> NIXOS
+        SEF_HM --> HOME
+        NM_niri --> IN_nixos-hardware
+        NM_niri --> HW
+        SEF_NM --> OVERLAYS
+        SEF_HM --> OVERLAYS
+        CORE_MKSYS --> PKGS
+        NM_niri --> PKGS
+    
     classDef input fill:#1e1e2e,stroke:#cba6f7,color:#cdd6f4
     classDef core fill:#1e1e2e,stroke:#f9e2af,color:#cdd6f4
+    classDef sefirah fill:#1e1e2e,stroke:#f5c2e7,color:#cdd6f4,stroke-width:2px
     classDef module fill:#1e1e2e,stroke:#a6e3a1,color:#cdd6f4
     classDef overlay fill:#1e1e2e,stroke:#fab387,color:#cdd6f4
     classDef pkg fill:#1e1e2e,stroke:#89b4fa,color:#cdd6f4
     classDef hw fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4
-    classDef sefirah fill:#1e1e2e,stroke:#f5c2e7,color:#cdd6f4,stroke-width:2px
-
-    class NP,FP,IT,HM,NHW,STY,LLMA,OMP,LUV,NF,NC,SPF,MT input
-    class FLAKE,MKSYS,IMPORT core
-    class NM,HM_MOD sefirah
-    class N_BASE,N_BOOT,N_AUDIO,N_BATTERY,N_DESKTOP,N_FIREWALL,N_FIRMWARE,N_FLATPAK,N_FONTS,N_GAMING,N_GRAPHICS,N_INPUT,N_NETWORK,NIRI_NIX,N_NIXLD,N_PLYMOUTH,N_POWER,N_PRINTING,N_RUSTDESK,N_STEAM,N_STYLIX,N_THINKFAN,N_USER,N_BACKUP,N_FIREFOX,N_NAUTILUS module
-    class H_BASE,H_SHELL,H_NIRI,H_FOOT,H_KITTY,H_BTOP,H_DEVKEYS,H_GTK,H_HYPRIDLE,H_HYPRLOCK,H_LUVUS,H_MAKO,H_MOCKTAIL,H_OMP,H_PACKAGES,H_SEFIRAH_LOCK,H_SERVICES,H_STARSHIP,H_TMUX,H_TOFI,H_WAYBAR_STYLE,H_YAZI,H_ZELLIJ,H_STARDEW module
-    class TX1C7 module
-    class OV_9R,OV_SEF,OV_TF_TUI,OV_XWS overlay
-    class SEFIRAH_PKG pkg
+    
+    class IN_flake-parts,IN_home-manager,IN_import-tree,IN_llm-agents,IN_luvus,IN_mocktail,IN_nix-flatpak,IN_nixCats,IN_nixos-hardware,IN_nixpkgs,IN_omp,IN_self,IN_spotifast,IN_stylix input
+    class CORE_FLAKE,CORE_MKSYS,CORE_IMPORT core
+    class SEF_NM,SEF_HM sefirah
+    class NM_audio,NM_backup,NM_base,NM_battery,NM_boot,NM_desktop,NM_firefox,NM_firewall,NM_firmware,NM_flatpak,NM_fonts,NM_gaming,NM_graphics,NM_input,NM_nautilus,NM_networking,NM_niri,NM_nix-ld,NM_plymouth,NM_power,NM_printing,NM_rustdesk,NM_steam,NM_stylix,NM_thinkfan,NM_user module
+    class HM_base,HM_btop,HM_dev-keys,HM_foot,HM_gtk,HM_hypridle,HM_hyprlock,HM_kitty,HM_luvus,HM_mako,HM_mocktail,HM_niri,HM_omp,HM_packages,HM_sefirah-lock,HM_services,HM_shell,HM_stardew,HM_starship,HM_tmux,HM_tofi,HM_waybar-style,HM_yazi,HM_zellij module
+    class OV_9router,OV_sefirah,OV_thinkfan-tui,OV_xwayland-satellite overlay
+    class PKG_sefirah pkg
     class HW hw
 ```
+<!-- END:AUTO-GENERATED -->
 
 ---
 
-## 🔮 Patterns — The Arcane Architecture
+## Patterns
 
-### 1. **Dendritic Module Composition** (`config.sefirah.nixosModules` / `config.sefirah.homeModules`)
+### 1. Dendritic Module Composition (`config.sefirah.nixosModules` / `config.sefirah.homeModules`)
 
 Every host declares **lists of deferred modules** — not inline config. The `mkSystem` function merges them:
 
@@ -253,13 +230,13 @@ inputs.nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
     { home-manager.users.blackmage.imports = homeModules; }
-  ] ++ nixosModules;  # ← dendritic merge here
+  ] ++ nixosModules;
 }
 ```
 
 **Why**: Hosts stay clean. Adding a module = one line in the host's list. No nesting hell.
 
-### 2. **`import-tree` Auto-Discovery**
+### 2. `import-tree` Auto-Discovery
 
 ```nix
 # flake.nix
@@ -270,7 +247,7 @@ outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
 
 Every `*.nix` under `modules/` becomes available as `config.sefirah.nixosModules` / `homeModules` — no manual `imports = [ ./foo.nix ./bar.nix ]`.
 
-### 3. **KDL Fragment Composition (Niri)**
+### 3. KDL Fragment Composition (Niri)
 
 `modules/home/niri.nix` reads **individual `.kdl` fragments** and stitches them with **Stylix theme placeholders**:
 
@@ -285,7 +262,7 @@ layout = subst themePlaceholders (builtins.readFile ./files/niri/layout.kdl);
 
 Binds are concatenated into a single `binds {}` block (Niri forbids multiple).
 
-### 4. **Overlay Sigils** (`overlays/`)
+### 4. Overlay Sigils (`overlays/`)
 
 Four overlays, each a single-purpose transformation:
 
@@ -296,7 +273,7 @@ Four overlays, each a single-purpose transformation:
 | `thinkfan-tui.nix` | Builds `thinkfan-tui` from source (Cargo) |
 | `xwayland-satellite.nix` | Patches XWayland satellite for Niri |
 
-### 5. **Host-Specific Thermal Stack** (`modules/hosts/tx1c7.nix`)
+### 5. Host-Specific Thermal Stack (`modules/hosts/tx1c7.nix`)
 
 ```
 throttled (Lenovo 80°C fix, RAPL, TCC offset -5°C)
@@ -310,7 +287,7 @@ thinkpad_acpi (fan_control=1, watchdog=0, keepalive@1s level 0)
 
 **No `thermald`** — broken on X1C7 (`dytc_lapmode` present). **No `auto-cpufreq`/`TLP`** — conflicts with PPD.
 
-### 6. **Declarative Scripts as Packages** (`packages.nix`)
+### 6. Declarative Scripts as Packages (`modules/home/packages.nix`)
 
 ```nix
 (writeShellScriptBin "brightness" ''
@@ -326,7 +303,7 @@ User-facing CLI tools (`brightness`, `waybar-reload`, `with-gamescope`, `niri-on
 
 ---
 
-## 🧙 Inspired By
+## Inspired By
 
 | Source | What Was Taken |
 |--------|----------------|
@@ -343,7 +320,7 @@ User-facing CLI tools (`brightness`, `waybar-reload`, `with-gamescope`, `niri-on
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 | Who | For What |
 |-----|----------|
@@ -360,7 +337,7 @@ User-facing CLI tools (`brightness`, `waybar-reload`, `with-gamescope`, `niri-on
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ```bash
 # Clone
@@ -373,8 +350,8 @@ sudo nixos-rebuild switch --flake .#sefirah
 # Home Manager (user)
 home-manager switch --flake .#blackmage@sefirah
 
-# Regenerate structure diagram locally
-./scripts/generate-structure-diagram.sh
+# Regenerate structure diagram
+nix run .#update-readme
 ```
 
 > **Note**: Fan control requires reboot after first switch (kernel module params). The `fan-keepalive` service keeps fan at **level 0 (off)** until you change it via `thinkfan-tui`.
@@ -382,9 +359,5 @@ home-manager switch --flake .#blackmage@sefirah
 ---
 
 <p align="center">
-  <em>— The tree grows downward. The roots are in the config. The branches reach the runtime. —</em>
-</p>
-
-<p align="center">
-  <sub>Generated with 🔮 by <code>scripts/generate-structure-diagram.sh</code> · Auto-synced via GitHub Actions on every push</sub>
+  <sub>Generated by <code>nix run .#update-readme</code> · Diagram source in <code>modules/flake/diagrams.nix</code></sub>
 </p>
