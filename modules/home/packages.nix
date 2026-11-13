@@ -4,7 +4,16 @@
     ({ pkgs, lib, ... }: {
       home.packages = with pkgs; [
         impala
-        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
+        # llm-agents still pins opencode 1.x; point it at the 2.x release binary.
+        (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode.overrideAttrs (_: {
+          version = "2.2.7";
+          src = pkgs.fetchurl {
+            url = "https://github.com/anomalyco/opencode/releases/download/v2.2.7/opencode-linux-x64.tar.gz";
+            hash = "sha256-iabO4ie1S8ARF5xSil5jF2AyRisaXiFyO2FoAc3cLKc=";
+          };
+        }))
+        herdr
+        herdr-desktop
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
         (brave.override {
           commandLineArgs = "--force-device-scale-factor=1";
@@ -85,7 +94,7 @@
         (writeShellScriptBin "with-gamescope" ''
           exec gamescope -f -W 1920 -H 1080 -- "$@"
         '')
-        motrix-next
+        rayburst
         (inputs.spotifast.packages.${pkgs.stdenv.hostPlatform.system}.spotifast.overrideAttrs {
           doCheck = false;
         })
