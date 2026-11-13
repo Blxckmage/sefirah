@@ -5,6 +5,7 @@
       let
         categoryDefinitions = { pkgs, ... }: {
         lspsAndRuntimeDeps.general = with pkgs; [
+          nodejs
           lua-language-server
           vscode-langservers-extracted
           vtsls
@@ -81,6 +82,7 @@
           plenary-nvim
           fff-nvim
           render-markdown-nvim
+          markdown-preview-nvim
           gitsigns-nvim
           typst-preview-nvim
           orgmode

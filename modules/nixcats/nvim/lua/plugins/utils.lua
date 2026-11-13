@@ -43,7 +43,25 @@ return {
 			{
 				"<leader>cp",
 				"<cmd>RenderMarkdown toggle<cr>",
-				desc = "Markdown Preview",
+				desc = "Render Markdown Toggle",
+			},
+		},
+	},
+	{
+		"iamcco/markdown-preview.nvim",
+		ft = "markdown",
+		keys = {
+			{
+				"<leader>mp",
+				"<cmd>MarkdownPreviewToggle<cr>",
+				ft = "markdown",
+				desc = "Markdown Preview in Browser",
+			},
+			{
+				"<leader>ms",
+				"<cmd>MarkdownPreviewStop<cr>",
+				ft = "markdown",
+				desc = "Stop Markdown Preview",
 			},
 		},
 	},
