@@ -2,7 +2,9 @@
   description = "sefirah — dendritic NixOS + Home Manager";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # shortcut: brave dropped from nixos-unstable 2026-11-03; this is the last
+    # unstable snapshot with it. Revert to nixos-unstable once #584534 lands there.
+    nixpkgs.url = "github:NixOS/nixpkgs/2591f65879e995cb99e023c8d3b6ec5b758150c4";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:denful/import-tree";
     home-manager.url = "github:nix-community/home-manager";
@@ -20,17 +22,26 @@
     spotifast.url = "github:crmne/spotifast";
     spotifast.inputs.nixpkgs.follows = "nixpkgs";
     mocktail.url = "github:komaruworld/mocktail";
-    den.url = "github:denful/den/bf2504f9f2e8621fee091335132ab3ae698cf808";
-    den-diagram.url = "github:denful/den-diagram/268bdbd9678ca3afab4ccbf40c76cf90b6205e2b";
   };
 
-  outputs = { self, nixpkgs, flake-parts, import-tree, home-manager, nixos-hardware, stylix, llm-agents, omp, luvus, nix-flatpak, nixCats, spotifast, mocktail, den, ... }@inputs:
+  outputs = inputs:
   let
-    denDiagram = builtins.getAttr "den-diagram" inputs;
-    flakeInputs = inputs // { "den-diagram" = denDiagram; };
-    flake = flakeInputs.flake-parts.lib.mkFlake { inputs = flakeInputs; } (flakeInputs.import-tree ./modules { filter = flakeInputs.import-tree.initFilter; });
+    modules = (inputs.import-tree ./modules) { filter = inputs.import-tree.initFilter; };
+    flake = inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      # den used to set this implicitly; perSystem outputs need it.
+      systems = [ "x86_64-linux" ];
+      imports = [ modules ];
+    };
   in
-  flake // {
-    denDiagrams-mermaid = flake.diagrams.tx1c7-mermaid;
+  {
+    apps = flake.apps;
+    checks = flake.checks;
+    devShells = flake.devShells;
+    formatter = flake.formatter;
+    legacyPackages = flake.legacyPackages;
+    nixosConfigurations = flake.nixosConfigurations;
+    nixosModules = flake.nixosModules;
+    overlays = flake.overlays;
+    packages = flake.packages;
   };
 }
