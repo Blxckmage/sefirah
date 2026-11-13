@@ -1,5 +1,8 @@
 final: prev: {
-  waybar = prev.waybar.overrideAttrs (old: {
+  waybar = (prev.waybar.override {
+    runTests = false;
+    cavaSupport = false;
+  }).overrideAttrs (old: {
     version = "0.15.0-unstable-2026-09-18";
     src = prev.fetchFromGitHub {
       owner = "Alexays";
@@ -8,7 +11,6 @@ final: prev: {
       hash = "sha256-OJBVQSIpW0Ozb3czGP3+TQyDC5BBqMQtx2asPsspFHo=";
     };
     buildInputs = (old.buildInputs or [ ]) ++ [ prev.modemmanager ];
-    mesonFlags = (old.mesonFlags or [ ]) ++ [ "-Dcava=disabled" ];
     doInstallCheck = false;
   });
 }
